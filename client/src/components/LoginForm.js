@@ -1,8 +1,9 @@
-import React, { useRef, useState  } from 'react'
+import React, { useContext, useRef, useState  } from 'react'
 import { FaTimes } from "react-icons/fa"
 import ReactModal from 'react-modal'
 import { Navigate } from "react-router-dom"
 import "../componentStyles/LoginFormStyles.css"
+import { UserContext } from '../UserContext'
 
 
 const LoginForm = ({ isOpen, onRequestClose }) => {
@@ -11,6 +12,7 @@ const form = useRef();
 const [email, setEmail] = useState('');
 const [password, setPassword] = useState('');
 const [redirect,setRedirect] = useState(false);
+const {setUserInfo} = useContext(UserContext);
 
 async function login(ev){
   ev.preventDefault();
@@ -21,8 +23,12 @@ async function login(ev){
     credentials: 'include',    
   });
   if (response.ok){
-    setRedirect(true);
-    alert('Sikeres bejelentkezés!');
+    response.json().then(userInfo => {
+      console.log('OK');
+      setUserInfo(userInfo);
+      alert('Sikeres Bejelentkezés!');
+      setRedirect(true);
+    });
   } else {
     alert('Nem megfelelő felhasználónév vagy jelszó!');
   }

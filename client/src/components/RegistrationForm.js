@@ -83,7 +83,7 @@ return (
 
             <label class='checkbox_label'>
               <input class="aszfCheckbox" type="checkbox" id="agree" checked={agree} onChange={checkboxHandler} />
-              <span class="aszfCheckbox" htmlFor="agree"> Elfogadom az <NavLink to="/aszf" target="_blank">Általános Szerződési Feltételek</NavLink>et és az <NavLink to="/adatvedelmi_nyilatkozat" target="_blank">Adatvédelmi Nyilatkozat</NavLink>ot.</span>
+              <span class="aszfCheckbox" htmlFor="agree"> Elfogadom az <NavLink to="/aszf" target="_blank" class="aszfCheckbox2">Általános Szerződési Feltételek</NavLink>et és az <NavLink to="/adatvedelmi_nyilatkozat" target="_blank" class="aszfCheckbox2">Adatvédelmi Nyilatkozat</NavLink>ot.</span>
             </label>
                        
 

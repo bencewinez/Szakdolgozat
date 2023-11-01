@@ -58,6 +58,22 @@
     transition: 0.3s;
 }
 
+.profileBtn{
+    color: black !important;
+}
+
+.profileBtn:hover{
+    color: rgb(32, 192, 87) !important;
+}
+
+.loginBtn{
+    color: black !important;
+}
+
+.loginBtn:hover{
+    color: rgb(32, 192, 87) !important;
+}
+
 @media screen and (max-width: 670px) {
     .nav-menu{
         flex-direction: column;

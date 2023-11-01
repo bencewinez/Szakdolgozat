@@ -1,0 +1,56 @@
+.profileBar{
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+    margin-top: 90px;
+    z-index: 999;
+    background-color: whitesmoke;
+    width: 300px;
+    height:fit-content;
+    border-radius: 0px 0px 0px 10px;
+    box-shadow:
+        /* Bottom */
+        0px 2px 2px rgba(0, 0, 0, 0.2),  
+        /* Left */
+        -2px 0px 2px rgba(0, 0, 0, 0.2);
+    position: fixed;
+    right: 0;
+}
+
+.profileBar ul{
+    padding: 0;
+    margin: 0;
+}
+
+.profileBar li{
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 200;
+    color: black !important;
+}
+
+.usernameLi{
+    padding-top: 10px;
+}
+
+.mysubjectsLi{
+    padding-top: 40px;
+}
+
+.subjectsLi{
+    padding-top: 40px;
+}
+
+.logoutLi{
+    padding-top: 40px;
+    padding-bottom: 10px;
+}
+
+.navbarProfileOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+}

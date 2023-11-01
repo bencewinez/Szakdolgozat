@@ -5,12 +5,14 @@ const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const User = require('./models/User');
 const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
 
 const salt = bcrypt.genSaltSync(10);
 const secret = 'fmsdazgh4245dashd83242dyid';
 
 app.use(cors({credentials:true,origin:'http://localhost:3000'}));
 app.use(express.json());
+app.use(cookieParser());
 
 mongoose.connect('mongodb+srv://pinterbence5:EduSzakdoga2023@eduszakdoga.b4zeaqb.mongodb.net/?retryWrites=true&w=majority');
 
@@ -42,11 +44,31 @@ app.post('/login', async (req,res) => {
     if (passOk) {
         jwt.sign({email,id:userDoc._id}, secret, {}, (err,token) => {
             if(err) throw err;
-            res.cookie('token', token).json('ok');
+            res.cookie('token', token).json({
+                id:userDoc._id,
+                email,
+            });
         });
     } else {
         res.status(400).json('Nem megfelelő e-mail vagy jelszó!');
     }
 });
+
+app.get('/profile', (req, res) => {
+    const { token } = req.cookies;
+    if (!token) {
+      return res.status(401).json({ error: 'Nincs érvényes token!' });
+    }    
+    jwt.verify(token, secret, {}, (err, info) => {
+      if (err) {
+        return res.status(401).json({ error: 'Érvénytelen token!' });
+      }
+      res.json(info);
+    });
+  });
+
+app.post('/logout', (req,res) => {
+    res.cookie('token', '').json('Logout OK');
+})
 
 app.listen(4000);

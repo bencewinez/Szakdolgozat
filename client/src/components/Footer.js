@@ -16,17 +16,17 @@ const Footer = () => {
               ΣDU
               </h6>
               <p>
-                <a href="/adatvedelmi_nyilatkozat" class="text-reset">Adatvédelmi Nyilatkozat</a>
+                <a href="/adatvedelmi_nyilatkozat" className="text-reset">Adatvédelmi Nyilatkozat</a>
               </p>
               <p>
-                <a href="/aszf" class="text-reset">ÁSZF</a>
+                <a href="/aszf" className="text-reset">ÁSZF</a>
               </p> 
             </MDBCol>
 
             <MDBCol md="2" lg="2" xl="2" className='mx-auto mb-4'>
               <h6 className='text-uppercase fw-bold mb-4'>Menü</h6>
               <p>
-                <a href="/kapcsolat" class="text-reset">Regisztráció</a>
+                <a href="/kapcsolat" className="text-reset">Regisztráció</a>
               </p>              
             </MDBCol>
 

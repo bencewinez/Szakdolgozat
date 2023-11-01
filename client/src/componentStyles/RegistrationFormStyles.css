@@ -53,3 +53,11 @@ form input[type="checkbox"] {
 .btn{
     margin-top: 1.5rem;
 }
+
+.aszfCheckbox2{
+    color: rgb(32, 192, 87);
+}
+
+.aszfCheckbox2:hover{
+    color: rgb(26, 163, 74);
+}
