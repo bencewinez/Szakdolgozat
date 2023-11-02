@@ -1,17 +1,17 @@
 import React from 'react'
 import Navbar from '../components/Navbar'
-import RegistrationForm from "../components/RegistrationForm"
+import EditProfileForm from "../components/EditProfileForm"
 import Footer from '../components/Footer'
 
-const Registration = () => {
+const Profile = () => {
   return (
     <div className='default_bg'>
         <Navbar />
         <br></br>
-        <RegistrationForm />
+        <EditProfileForm />
         <Footer />
     </div>
   )
 }
 
-export default Registration
+export default Profile

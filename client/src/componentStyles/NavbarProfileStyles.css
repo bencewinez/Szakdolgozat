@@ -5,7 +5,7 @@
     margin-top: 90px;
     z-index: 999;
     background-color: whitesmoke;
-    width: 300px;
+    width: 500px;
     height:fit-content;
     border-radius: 0px 0px 0px 10px;
     box-shadow:
@@ -15,6 +15,7 @@
         -2px 0px 2px rgba(0, 0, 0, 0.2);
     position: fixed;
     right: 0;
+    transition: 0.3s;
 }
 
 .profileBar ul{
@@ -33,6 +34,12 @@
     padding-top: 10px;
 }
 
+.usernameLi p{
+    color:rgb(32, 192, 87);
+    margin-bottom: 0;
+    font-size: 1.3rem;
+}
+
 .mysubjectsLi{
     padding-top: 40px;
 }
@@ -46,11 +53,55 @@
     padding-bottom: 10px;
 }
 
+.usernameLia{
+    color: black;
+    margin-bottom: 0;
+}
+
+.mysubjectsLia{
+    color: black;
+    margin-bottom: 0;
+}
+
+.subjectsLia{
+    color: black;
+    margin-bottom: 0;
+}
+
+.logoutLia{
+    color: black;
+    margin-bottom: 0;
+}
+
+.usernameLia p:hover{
+    color: rgb(32, 192, 87);
+}
+
+.mysubjectsLia p:hover{
+    color: rgb(32, 192, 87);
+}
+
+.subjectsLia p:hover{
+    color: rgb(32, 192, 87);
+}
+
+.logoutLia p:hover{
+    color: rgb(32, 192, 87);
+}
+
 .navbarProfileOverlay {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 0%;
+    height: 0%;
     z-index: 999;
+}
+
+@media screen and (max-width: 1000px) {
+.profileBar{
+    width: 100%;
+    border-radius: 0px 0px 10px 10px;
+    transition: 0.3s;
+}
 }

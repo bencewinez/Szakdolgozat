@@ -60,15 +60,67 @@ app.get('/profile', (req, res) => {
       return res.status(401).json({ error: 'Nincs érvényes token!' });
     }    
     jwt.verify(token, secret, {}, (err, info) => {
-      if (err) {
+        if (err) {
         return res.status(401).json({ error: 'Érvénytelen token!' });
-      }
-      res.json(info);
+        }
+        res.json(info);
     });
-  });
+});
 
 app.post('/logout', (req,res) => {
     res.cookie('token', '').json('Logout OK');
-})
+});
+
+app.get('/userProfile', async (req, res) => {
+    const { token } = req.cookies;
+    if (!token) {
+        return res.status(401).json({ error: 'Nincs érvényes token!' });
+    }
+    jwt.verify(token, secret, {}, async (err, info) => {
+        if (err) {
+            return res.status(401).json({ error: 'Érvénytelen token!' });
+        } 
+        const userId = info.id;
+        try {
+            const user = await User.findById(userId);
+            if (!user) {
+                return res.status(404).json({ error: 'A felhasználó nem található meg!' });
+            }
+            res.json(user);
+        } catch (error) {
+            return res.status(500).json({ error: 'Hiba a felhasználó lekérése közben!' });
+        }
+    });
+});
+
+app.post('/changePassword', async (req, res) => {
+    const { token } = req.cookies;
+    if (!token) {
+        return res.status(401).json({ error: 'Nincs érvényes token!' });
+    }
+    jwt.verify(token, secret, {}, async (err, info) => {
+        if (err) {
+            return res.status(401).json({ error: 'Érvénytelen token!' });
+        } 
+        const userId = info.id;
+        const { currentPassword, newPassword } = req.body;
+        try {
+            const userDoc = await User.findById(userId);
+            if (!userDoc) {
+                return res.status(404).json({ error: 'A felhasználó nem található meg!' });
+            }
+            const isCurrentPasswordValid = bcrypt.compareSync(currentPassword, userDoc.password);
+            if (!isCurrentPasswordValid) {
+                return res.status(400).json({ error: 'A jelenlegi jelszó helytelen!' });
+            }
+            const hashedNewPassword = bcrypt.hashSync(newPassword, salt);
+            userDoc.password = hashedNewPassword;
+            await userDoc.save();
+            res.json({ message: 'A jelszó sikeresen módosítva lett!' });
+        } catch (error) {
+            return res.status(500).json({ error: 'Hiba a jelszó módosítása közben!' });
+        }
+    });
+});
 
 app.listen(4000);

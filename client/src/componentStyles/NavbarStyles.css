@@ -12,7 +12,27 @@
     transition: 0.3s;
 }
 
+.headerProfile{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    position: fixed;
+    width: 100%;
+    height: 90px;
+    z-index: 10;
+    background: whitesmoke;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+}
+
 .header-scrolling{
+    background-color: whitesmoke;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    transition: 0.4s;
+}
+
+.headerProfile-scrolling{
     background-color: whitesmoke;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     transition: 0.4s;
@@ -52,11 +72,6 @@
     transition: 0.3s;
 }
 
-.hamburger{
-    cursor: pointer;
-    display: none;
-    transition: 0.3s;
-}
 
 .profileBtn{
     color: black !important;
@@ -72,6 +87,18 @@
 
 .loginBtn:hover{
     color: rgb(32, 192, 87) !important;
+}
+
+.hamburger{
+    cursor: pointer;
+    display: none;
+    transition: 0.3s;
+}
+
+.hamburger2{
+    cursor: pointer;
+    display: initial;
+    transition: 0.3s;
 }
 
 @media screen and (max-width: 670px) {

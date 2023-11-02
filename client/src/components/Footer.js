@@ -24,20 +24,23 @@ const Footer = () => {
             </MDBCol>
 
             <MDBCol md="2" lg="2" xl="2" className='mx-auto mb-4'>
-              <h6 className='text-uppercase fw-bold mb-4'>Menü</h6>
-              <p>
-                <a href="/kapcsolat" className="text-reset">Regisztráció</a>
-              </p>              
-            </MDBCol>
-
-            <MDBCol md="4" lg="3" xl="3" className='mx-auto mb-md-0 mb-4'>
-              <h6 className='text-uppercase fw-bold mb-4'>Kapcsolat</h6>
+            <h6 className='text-uppercase fw-bold mb-4'>Kapcsolat</h6>
               <p>
                 pinterbence5@gmail.com
               </p>
               <p>
                 +36 30 449 4996
+              </p>             
+            </MDBCol>
+
+            <MDBCol md="4" lg="3" xl="3" className='mx-auto mb-md-0 mb-4'>
+            <h6 className='text-uppercase fw-bold mb-4'>Egyéb adat</h6>
+              <p>
+                adat
               </p>
+              <p>
+                adat
+              </p>   
             </MDBCol>
 
           </MDBRow>

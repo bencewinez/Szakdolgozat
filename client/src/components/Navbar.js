@@ -54,40 +54,50 @@ const Navbar  = () => {
     window.addEventListener("scroll", changeColor);
     
   return (
-    <div className={color ? "header header-scrolling" : "header"}>
-        <NavLink to="/">
-            <img className="logoImage" src={ LogoImage } alt="ΣDU"/>
-        </NavLink>
-        {!email && (
-            <>
-                <ul className={click ? "nav-menu active" : "nav-menu"}>
-                      <li>
-                      <NavLink onClick={handleLoginClick} className='loginBtn'>BEJELENTKEZÉS</NavLink>
-                      </li>
-                      <li>
-                      <NavLink to="/regisztracio" activeClassName="active">REGISZTRÁCIÓ</NavLink>
-                      </li>
-                </ul>
-  
-                <div className="hamburger" onClick={handleClick}>
-                    {click ? ( <FaTimes size={25} style={{color: "#000"}}/> ) : ( <FaBars size={25} style={{color: "#000"}}/> )}
-                </div>
-            </>
-        )}
-
+    <div>
         {email && (
-            <>
-                <ul className={click ? "nav-menu active" : "nav-menu"}>
-                    <li>
-                    <NavLink onClick={handleNavbarProfileClick} className="profileBtn">PROFIL</NavLink>
-                    </li>
-                </ul>
-            </>
+            <div className={color ? "headerProfile headerProfile-scrolling" : "headerProfile"}>
+            <NavLink to="/">
+                <img className="logoImage" src={ LogoImage } alt="ΣDU"/>
+            </NavLink>
+            <div className="hamburger2" onClick={() => {
+                if(!showNavbarProfile){
+                    setShowNavbarProfile(true);
+                    handleClick();
+                    handleNavbarProfileClick();
+                } else {
+                    handleClick();
+                    setShowNavbarProfile(false);
+                }                        
+            }}>
+                {click ? ( <FaTimes size={25} style={{color: "#000"}}/> ) : ( <FaBars size={25} style={{color: "#000"}}/> )}
+            </div> 
+            <NavbarProfile isOpen={showNavbarProfile} onRequestClose={closeNavbarProfileModal} />
+            </div>
         )}
-        <LoginForm isOpen={showLogin} onRequestClose={closeLoginModal} />
-        <NavbarProfile isOpen={showNavbarProfile} onRequestClose={closeNavbarProfileModal} />
-    </div>
 
+        {!email && (
+            <div className={color ? "header header-scrolling" : "header"}>
+            <NavLink to="/">
+                <img className="logoImage" src={ LogoImage } alt="ΣDU"/>
+            </NavLink>
+                    <ul className={click ? "nav-menu active" : "nav-menu"}>
+                          <li>
+                          <NavLink onClick={handleLoginClick} className='loginBtn'>BEJELENTKEZÉS</NavLink>
+                          </li>
+                          <li>
+                          <NavLink to="/regisztracio" activeClassName="active">REGISZTRÁCIÓ</NavLink>
+                          </li>
+                    </ul>
+      
+                    <div className="hamburger" onClick={handleClick}>
+                        {click ? ( <FaTimes size={25} style={{color: "#000"}}/> ) : ( <FaBars size={25} style={{color: "#000"}}/> )}
+                    </div>
+            <LoginForm isOpen={showLogin} onRequestClose={closeLoginModal} />
+            </div>
+        )}
+    </div>
+    
   )
 }
 

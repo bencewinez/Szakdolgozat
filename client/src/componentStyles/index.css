@@ -72,14 +72,6 @@ ul{
   transition: 0.3s;
 }
 
-.home_bg{
-  height: 100%;
-  background-color: white;
-  background: url('../assets/backgrounds/homeBackground.jpg');
-  background-size: cover;
-  background-position: center;
-}
-
 .home_h1 h1{
   padding-top: 14rem;
   padding-bottom: 46rem;
@@ -97,7 +89,7 @@ ul{
   color: rgb(32, 192, 87);
 }
 
-.registration_bg{
+.default_bg{
   height: 100%;
   background-color: white;
   background: url('../assets/backgrounds/homeBackground.jpg');

@@ -4,6 +4,7 @@ import Registration from './routes/Registration';
 import NotFound from './routes/NotFound';
 import Aszf from './routes/Aszf';
 import Adatvedelem from './routes/Adatvedelem';
+import Profile from './routes/Profile';
 import { UserContext, UserContextProvider } from './UserContext';
 
 
@@ -18,6 +19,7 @@ const App = () => {
             <Route index element={ <Home /> } />
             <Route path='/' element={ <Home /> } />
             <Route path='/regisztracio' element={ <Registration /> } />
+            <Route path='/profil' element={ <Profile /> } />
             <Route path='/aszf' element={ <Aszf /> } />
             <Route path='/adatvedelmi_nyilatkozat' element={ <Adatvedelem /> } />
             <Route path='*' element={ <NotFound /> } />

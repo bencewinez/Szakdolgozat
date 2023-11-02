@@ -16,6 +16,7 @@ const {setUserInfo} = useContext(UserContext);
 
 async function login(ev){
   ev.preventDefault();
+  
   const response = await fetch('http://localhost:4000/login', {
     method: 'POST',
     body: JSON.stringify({email, password}),
