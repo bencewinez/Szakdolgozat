@@ -38,7 +38,19 @@ const EditProfileForm = () => {
 
     async function editData(ev){
         ev.preventDefault();
-        /* TODO */
+        const response = await fetch('http://localhost:4000/changeData', {
+            credentials: 'include',
+            method: 'POST',
+            body: JSON.stringify({newName, newEmail}),
+            headers: {'Content-Type':'application/json'},
+        })
+        if (response.status === 200) {
+            alert('Az adat módosítás sikeres!');
+        } else if (response.status === 400) {
+            alert('A megadott e-mail cím már foglalt!');
+        } else {
+            alert('Az adat(ok) módosítása sikertelen, próbálja meg újra!');
+        }
     }
 
     async function editPassword(ev){
@@ -68,18 +80,20 @@ const EditProfileForm = () => {
 
     return (
     <div>
-        <form ref={formData}>
+        <form ref={formData} onSubmit={editData}>
             <h1 className='regh1'>Alap adatok</h1>
             <h2 className='regh2'>A kívánt adat(ok) módosítása után kattintson a "MÓDOSÍTOK" gombra!</h2>
 
             <label>Név:</label>
             <input type="text" name="name"
-            value={userAttributes.name}
+            placeholder={userAttributes.name}
+            value={newName}
             onChange={ev => setnewName(ev.target.value)}></input>
 
             <label>E-mail cím:</label>
             <input type="email" name="email"
-            value={userAttributes.email}
+            placeholder={userAttributes.email}
+            value={newEmail}
             onChange={ev => setnewEmail(ev.target.value)}></input>             
 
             <input type="submit" class="btn" value="MÓDOSÍTOK" />

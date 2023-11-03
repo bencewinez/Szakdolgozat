@@ -26,7 +26,10 @@ const RegistrationForm = () => {
         })
         if (response.status === 200){
           alert('A regisztráció sikeres!');       
-        } else {
+        } else if (response.status === 400){
+          alert('A megadott e-mail cím már foglalt!');
+        }
+        else {
           alert('A regisztráció sikertelen, próbálja meg újra!');
         }
       } else {

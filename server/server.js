@@ -19,6 +19,10 @@ mongoose.connect('mongodb+srv://pinterbence5:EduSzakdoga2023@eduszakdoga.b4zeaqb
 app.post('/register', async (req,res) => {
     const {name, email, password, userType} = req.body;
     try{
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+        return res.status(400).json({ error: 'A megadott e-mail cím már foglalt!' });
+        }
         const userDoc = await User.create({
             name,
             email,
@@ -121,6 +125,42 @@ app.post('/changePassword', async (req, res) => {
             return res.status(500).json({ error: 'Hiba a jelszó módosítása közben!' });
         }
     });
+});
+
+app.post('/changeData', async (req, res) => {
+    const { token } = req.cookies;
+    if (!token) {
+        return res.status(401).json({ error: 'Nincs érvényes token!' });
+    }
+    jwt.verify(token, secret, {}, async (err, info) => {
+        if (err) {
+            return res.status(401).json({ error: 'Érvénytelen token!' });
+        } 
+        const userId = info.id;
+        const { newName, newEmail } = req.body;
+        try {
+            const userDoc = await User.findById(userId);
+            if (!userDoc) {
+                return res.status(404).json({ error: 'A felhasználó nem található meg!' });
+            }
+            const existingUser = await User.findOne({ newEmail });
+            if (existingUser) {
+                return res.status(400).json({ error: 'A megadott e-mail cím már foglalt!' });
+            }
+            if(newName !== ''){
+                userDoc.name = newName;
+            }
+            if(newEmail !== ''){
+                userDoc.email = newEmail;
+            }
+            await userDoc.save();
+            res.json({ message: 'Az adat(ok) sikeresen módosítva lett(ek)!' });
+        
+        } catch (error) {
+            return res.status(500).json({ error: 'Hiba az adat(ok) módosítása közben!' });
+        }
+    });
+
 });
 
 app.listen(4000);
