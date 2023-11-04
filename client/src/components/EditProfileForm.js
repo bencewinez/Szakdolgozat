@@ -2,13 +2,14 @@ import React, { useContext, useEffect, useState, useRef  } from 'react'
 import { NavLink } from "react-router-dom"
 import { UserContext } from "../UserContext"
 import "../componentStyles/EditProfileFormStyles.css"
+import DeleteProfilePopup from './DeleteProfilePopup'
 
 const EditProfileForm = () => {
 
     const formData = useRef();
     const formPassword = useRef();
-    const [passwordError, setPasswordError] = useState('');
-    const {setUserInfo, userInfo} = useContext(UserContext);
+    const formDeleteProfile = useRef();
+    const {userInfo, setUserInfo} = useContext(UserContext);
     const [userAttributes, setUserAttributes] = useState({});
 
     const [newName, setnewName] = useState('');
@@ -16,6 +17,17 @@ const EditProfileForm = () => {
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+
+    const [showDeleteProfilePopup, setShowDeleteProfilePopup] = useState(false);
+
+    const handleDeleteProfilePopup = (e) => {
+        e.preventDefault();
+        setShowDeleteProfilePopup(true);
+    }
+
+    const closeDeleteProfilePopupModal = () => {
+        setShowDeleteProfilePopup(false);
+    }
 
     useEffect(() => {
         if (userInfo) {
@@ -46,7 +58,7 @@ const EditProfileForm = () => {
         })
         if (response.status === 200) {
             alert('Az adat módosítás sikeres!');
-        } else if (response.status === 400) {
+        } else if (response.status === 402) {
             alert('A megadott e-mail cím már foglalt!');
         } else {
             alert('Az adat(ok) módosítása sikertelen, próbálja meg újra!');
@@ -119,6 +131,13 @@ const EditProfileForm = () => {
 
             <input type="submit" class="btn" value="MÓDOSÍTOK"/>
         </form>
+
+        <form ref={formDeleteProfile}>
+            <h1 className='regh1'>Profil törlése</h1>    
+            <h2 className='regh2'>FIGYELEM! A profil törlése esetén minden felvett tantárgyat elveszít!</h2>
+            <button onClick={handleDeleteProfilePopup} class="btn">PROFIL TÖRLÉSE</button>
+        </form>
+        <DeleteProfilePopup isOpen={showDeleteProfilePopup} onRequestClose={closeDeleteProfilePopupModal} />
     </div>
   )
 }

@@ -145,7 +145,7 @@ app.post('/changeData', async (req, res) => {
             }
             const existingUser = await User.findOne({ newEmail });
             if (existingUser) {
-                return res.status(400).json({ error: 'A megadott e-mail cím már foglalt!' });
+                return res.status(402).json({ error: 'A megadott e-mail cím már foglalt!' });
             }
             if(newName !== ''){
                 userDoc.name = newName;
@@ -162,5 +162,30 @@ app.post('/changeData', async (req, res) => {
     });
 
 });
+
+app.post('/deleteProfile', async (req, res) => {
+    const { token } = req.cookies;
+    if (!token) {
+        return res.status(401).json({ error: 'Nincs érvényes token!' });
+    }
+    jwt.verify(token, secret, {}, async (err, info) => {
+        if (err) {
+            return res.status(401).json({ error: 'Érvénytelen token!' });
+        } 
+        const userId = info.id;
+        try {
+            const userDoc = await User.findById(userId);
+            if (!userDoc) {
+                return res.status(404).json({ error: 'A felhasználó nem található meg!' });
+            }
+            await User.findByIdAndRemove(userId);
+            res.clearCookie('token');
+            res.json({ message: 'A profil sikeresen törölve lett!' });
+        } catch (error) {
+            return res.status(500).json({ error: 'Hiba a profil törlése közben!' });
+        }
+    });
+});
+
 
 app.listen(4000);

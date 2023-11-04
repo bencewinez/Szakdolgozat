@@ -1,5 +1,6 @@
 import React, { useState, useRef  } from 'react'
 import { NavLink } from "react-router-dom"
+import { Navigate } from "react-router-dom"
 import "../componentStyles/RegistrationFormStyles.css"
 
 
@@ -7,6 +8,7 @@ const RegistrationForm = () => {
   const form = useRef();
   const [agree, setAgree] = useState(false);
   const [passwordError, setPasswordError] = useState('');
+  const [redirect,setRedirect] = useState(false);
 
   const checkboxHandler = (e) => {
     setAgree(e.target.checked);
@@ -25,7 +27,8 @@ const RegistrationForm = () => {
           headers: {'Content-Type':'application/json'},
         })
         if (response.status === 200){
-          alert('A regisztráció sikeres!');       
+          alert('A regisztráció sikeres!');
+          setRedirect(true);  
         } else if (response.status === 400){
           alert('A megadott e-mail cím már foglalt!');
         }
@@ -42,6 +45,9 @@ const RegistrationForm = () => {
   const [password, setPassword] = useState('');
   const [userType, setUserType] = useState(0);
 
+  if (redirect) {
+    return<Navigate to={'/'}/>
+  }
 
   return (
     <div>
