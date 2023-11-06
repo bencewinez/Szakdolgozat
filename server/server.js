@@ -3,9 +3,13 @@ const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
-const User = require('./models/User');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
+
+const User = require('./models/User');
+const SubjectTopic = require('./models/SubjectTopics');
+const SubjectTopicModel = require('./models/SubjectTopics');
+const SubjectModel = require('./models/Subject');
 
 const salt = bcrypt.genSaltSync(10);
 const secret = 'fmsdazgh4245dashd83242dyid';
@@ -187,6 +191,55 @@ app.post('/deleteProfile', async (req, res) => {
     });
 });
 
+app.get('/getSubjectTopics', async (req, res) => {
+    try {
+        const subjectTopics = await SubjectTopicModel.find({}, 'name');
+        res.json(subjectTopics);
+    } catch (error) {
+        res.status(500).json({ error: 'Hiba a Tantárgy Témakörök lekérdezése közben!' });
+    }
+});
 
+app.post('/addSubject', async (req, res) => {
+    const { token } = req.cookies;
+    if (!token) {
+        return res.status(401).json({ error: 'Nincs érvényes token!' });
+    }
+    jwt.verify(token, secret, {}, async (err, info) => {
+        if (err) {
+            return res.status(401).json({ error: 'Érvénytelen token!' });
+        } 
+        const userId = info.id;
+        try {
+            const { name, description, topic } = req.body;
+            if (!name || !description || !topic) {
+                return res.status(400).json({ error: 'Minden mezőt ki kell töltenie.' });
+            }
+            const userDoc = await User.findById(userId);
+            if (!userDoc) {
+                return res.status(404).json({ error: 'A felhasználó nem található meg!' });
+            }
+            const urlSlug = name
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/[^a-zA-Z0-9 ]/g, '')
+                .replace(/\s+/g, '_')
+                .toLowerCase();
+            const subject = new SubjectModel({
+                name,
+                description,
+                author: userDoc.name,
+                authorID: userDoc._id,
+                urlSlug,
+                topic,
+                lessonsCount: 0,
+            });
+            await subject.save();
+            res.json(subject);
+        } catch (error) {
+            res.status(500).json({ error: 'Hiba a tantárgy létrehozása közben!' });
+        }
+    });
+});
 
 app.listen(4000);
