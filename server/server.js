@@ -242,4 +242,23 @@ app.post('/addSubject', async (req, res) => {
     });
 });
 
+app.get('/getMySubjects', async (req, res) => {
+    const { token } = req.cookies;
+    if (!token) {
+        return res.status(401).json({ error: 'Nincs érvényes token!' });
+    }
+    jwt.verify(token, secret, {}, async (err, info) => {
+        if (err) {
+            return res.status(401).json({ error: 'Érvénytelen token!' });
+        }
+        const userId = info.id;
+        try {
+            const mySubjects = await SubjectModel.find({ authorID: userId });
+            res.json(mySubjects);
+        } catch (error) {
+            return res.status(500).json({ error: 'Hiba a saját tantárgyak lekérése közben!' });
+        }
+    });
+});
+
 app.listen(4000);

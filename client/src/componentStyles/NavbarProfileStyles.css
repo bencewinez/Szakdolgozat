@@ -98,6 +98,23 @@
     z-index: 999;
 }
 
+.backArrow{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 10px;
+    color: black;
+    box-shadow:
+    /* Bottom */
+    0px 2px 2px rgba(0, 0, 0, 0.1),  
+    /* Left */
+    -2px 0px 2px rgba(0, 0, 0, 0.1);
+}
+
 @media screen and (max-width: 1000px) {
 .profileBar{
     width: 100%;
