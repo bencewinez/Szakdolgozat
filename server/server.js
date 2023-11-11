@@ -225,6 +225,10 @@ app.post('/addSubject', async (req, res) => {
                 .replace(/[^a-zA-Z0-9 ]/g, '')
                 .replace(/\s+/g, '_')
                 .toLowerCase();
+            const existingSubject = await SubjectModel.findOne({ urlSlug });
+            if (existingSubject) {
+                return res.status(400).json({ error: 'Ez a tantárgy név már létezik!' });
+            }
             const subject = new SubjectModel({
                 name,
                 description,
@@ -259,6 +263,25 @@ app.get('/getMySubjects', async (req, res) => {
             return res.status(500).json({ error: 'Hiba a saját tantárgyak lekérése közben!' });
         }
     });
+});
+
+app.get('/getSubject/:urlSlug', async (req, res) => {
+    try {
+        const { urlSlug } = req.params;
+        const subject = await SubjectModel.findOne({ urlSlug }, 'name description author topic');
+
+        if (!subject) {
+            return res.status(404).json({ error: 'A tantárgy nem található!' });
+        }
+
+        const { name, description, author, topic } = subject;
+        const category = await SubjectTopicModel.findById(topic, 'name');
+        const responseSubject = { name, description, author, topic: category.name };
+
+        res.json(responseSubject);
+    } catch (error) {
+        res.status(500).json({ error: 'Hiba a tantárgy részleteinek lekérdezése közben!' });
+    }
 });
 
 app.listen(4000);

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useContext } from 'react'
 import { NavLink } from "react-router-dom"
-import { Navigate } from "react-router-dom"
+import { Navigate, useNavigate  } from "react-router-dom"
+import SubjectSite from '../routes/SubjectSite';
 import "../componentStyles/AddSubjectFormStyles.css"
 
 
@@ -8,6 +9,7 @@ const AddSubjectForm = () => {
   const form = useRef();
   const [agree, setAgree] = useState(false);
   const [subjectTopics, setSubjectTopics] = useState([]);
+  const navigate = useNavigate();
 
   const [subjectName, setSubjectName] = useState('');
   const [subjectDescription, setSubjectDescription] = useState('');
@@ -28,7 +30,7 @@ const AddSubjectForm = () => {
     setAgree(e.target.checked);
   }
 
-  const addSubject = (e) => {
+  const addSubject = async(e) => {
     e.preventDefault();
 
     const name = subjectName;
@@ -39,23 +41,37 @@ const AddSubjectForm = () => {
       alert('Minden mezőt ki kell töltenie!');
       return;
     }
-    fetch('http://localhost:4000/addSubject', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name,
-        description,
-        topic,
-      }),
-      credentials: 'include',
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        alert('A tantárgy sikeresen létrehozásra került, ami innentől megtalálható a Saját Tantárgyaim menüpont alatt!');
-      })
-      .catch((error) => {
-        alert('Hiba a tantárgy létrehozása közben! Próbálja meg újra később!');
+
+    try {
+      const response = await fetch('http://localhost:4000/addSubject', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          description,
+          topic,
+        }),
+        credentials: 'include',
       });
+  
+      if (response.ok) {
+        const { urlSlug } = await response.json();
+        alert('A tantárgy sikeresen létrehozásra került, ami innentől megtalálható a Saját Tantárgyaim menüpont alatt!');
+        navigate(`/tantargyak/${urlSlug}`);
+      } else {
+        const errorData = await response.json();
+  
+        if (errorData.error === 'Ez a tantárgy név már létezik!') {
+          alert('Már létezik tantárgy ezzel a névvel, kérjük módosítsa azt például a készítő nevének feltüntetésével!');
+        } else {
+          alert('Hiba a tantárgy létrehozása közben! Próbálja meg újra később!');
+        }
+      }
+    } catch (error) {
+      console.error('Hiba a fetch hívás során:', error);
+      alert('Hiba a tantárgy létrehozása közben! Próbálja meg újra később!');
+    }
+   
   };
 
 return (

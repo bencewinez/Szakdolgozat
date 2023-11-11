@@ -79,9 +79,16 @@ const NavbarProfile = ({ isOpen, onRequestClose }) => {
                     <li className="usernameLi">
                         <p>Saját Tantárgyaim</p>
                     </li>
+                    <li className="mysubjectsLi">
+                    <NavLink to="/ujtantargy" className="usernameLia">
+                        <p className="usernameLia">Új tantárgy létrehozása</p>
+                    </NavLink>
+                    </li>
                     {mySubjects.map((subject) => (
                     <li key={subject._id} className="mysubjectsLi">
-                        <p>{subject.name}</p>
+                        <NavLink to={`/tantargyak/${subject.urlSlug}`} className="mysubjectsLia">
+                        <p className="mysubjectsLia">{subject.name}</p>
+                        </NavLink>
                     </li>
                     ))}
                     <li className="logoutLi">
@@ -102,10 +109,9 @@ const NavbarProfile = ({ isOpen, onRequestClose }) => {
                     </li>
                     <li className="mysubjectsLi">
                     <NavLink
-                        className="mysubjectsLia"
-                        onClick={() => setIsMySubjectsActive(true)}
-                    >
-                        <p className="mysubjectsLia">Saját Tantárgyaim</p>
+                    className="subjectsLia"
+                    onClick={() => setIsMySubjectsActive(true)}>
+                        <p className="subjectsLia">Saját Tantárgyaim</p>
                     </NavLink>
                     </li>
                     <li className="subjectsLi">

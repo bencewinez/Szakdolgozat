@@ -1,0 +1,47 @@
+.subjectBox{
+    display: flex;
+    width: 1100px;
+    height: fit-content;
+    margin: 0 auto;
+    padding-bottom: 32rem;
+}
+
+.introBar{
+    background-color: rgb(32, 192, 87);
+    padding-top: 90px; 
+}
+
+.introBox{
+    width: 1100px;
+    height: fit-content;
+}
+
+.introBox h1{
+    color: white;
+    margin-bottom: 0px;
+}
+
+.description{
+    color: white;
+    margin-bottom: 0px;
+}
+
+.topic{
+    color: white;
+    margin-bottom: 0px;
+}
+
+.author{
+    color: white;
+    margin-bottom: 0px;
+}
+
+@media screen and (max-width: 1100px) {
+    .subjectBox{
+        width: 100%;
+    }
+    
+    .introBox{
+        width: 100%;
+    }
+}
