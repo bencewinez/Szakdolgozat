@@ -92,7 +92,9 @@ ul{
 .default_bg{
   height: 100%;
   background-color: white;
-  background: url('../assets/backgrounds/homeBackground.jpg');
+  /* background: url('../assets/backgrounds/homeBackground.jpg'); */
+  background: rgb(32,192,87);
+  background: radial-gradient(circle, rgba(32,192,87,1) 0%, rgba(255,255,255,1) 0%, rgba(32,192,87,1) 100%);
   background-size: cover;
   background-position: center;
 }

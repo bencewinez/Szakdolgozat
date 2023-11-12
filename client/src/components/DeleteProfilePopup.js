@@ -5,7 +5,6 @@ import { Navigate } from "react-router-dom"
 import { UserContext } from '../UserContext'
 import "../componentStyles/DeleteProfilePopupStyles.css"
 
-
 const DeleteProfilePopup = ({ isOpen, onRequestClose }) => {
 const form = useRef();
 

@@ -115,10 +115,30 @@
     -2px 0px 2px rgba(0, 0, 0, 0.1);
 }
 
-@media screen and (max-width: 1000px) {
-.profileBar{
-    width: 100%;
-    border-radius: 0px 0px 10px 10px;
-    transition: 0.3s;
+.subjectContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+
+.subjectContainer svg{
+    margin-left: 6px;
+    margin-top: -3px;
+    cursor: pointer;
+}
+
+.subjectContainer svg:hover{
+    color: rgb(32, 192, 87) !important;
+}
+
+@media screen and (max-width: 1000px) {
+    .profileBar{
+        width: 100%;
+        border-radius: 0px 0px 10px 10px;
+        transition: 0.3s;
+    }
+
+    .backArrow{
+        padding: 2px;
+    }
 }

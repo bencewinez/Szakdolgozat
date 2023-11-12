@@ -10,6 +10,7 @@ const User = require('./models/User');
 const SubjectTopic = require('./models/SubjectTopics');
 const SubjectTopicModel = require('./models/SubjectTopics');
 const SubjectModel = require('./models/Subject');
+const SubscriptionModel = require('./models/Subscription');
 
 const salt = bcrypt.genSaltSync(10);
 const secret = 'fmsdazgh4245dashd83242dyid';
@@ -282,6 +283,89 @@ app.get('/getSubject/:urlSlug', async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: 'Hiba a tantárgy részleteinek lekérdezése közben!' });
     }
+});
+
+app.post('/subscribe/:urlSlug', async (req, res) => {
+    const { token } = req.cookies;
+    if (!token) {
+      return res.status(401).json({ error: 'Nincs érvényes token!' });
+    }
+    jwt.verify(token, secret, {}, async (err, info) => {
+      if (err) {
+        return res.status(401).json({ error: 'Érvénytelen token!' });
+      }
+      const userId = info.id;
+      const { urlSlug } = req.params;
+      try {
+        const subject = await SubjectModel.findOne({ urlSlug });
+        if (!subject) {
+          return res.status(404).json({ error: 'A tantárgy nem található!' });
+        }  
+        const existingSubscription = await SubscriptionModel.findOne({
+          userId,
+          subjectId: subject._id,
+        });
+        if (existingSubscription) {
+          return res.status(409).json({ error: 'Már feliratkoztál erre a tantárgyra!' });
+        }
+        const subscription = new SubscriptionModel({
+          userId,
+          subjectId: subject._id,
+        });
+        await subscription.save();
+        res.json({ message: 'Sikeres feliratkozás!' });
+      } catch (error) {
+        res.status(500).json({ error: 'Hiba a feliratkozás során!' });
+      }
+    });
+});
+
+app.get('/getSubjectNames', async (req, res) => {
+    const { token } = req.cookies;
+    if (!token) {
+        return res.status(401).json({ error: 'Nincs érvényes token!' });
+    }
+    jwt.verify(token, secret, {}, async (err, info) => {
+        if (err) {
+            return res.status(401).json({ error: 'Érvénytelen token!' });
+        }
+        const userId = info.id;
+        try {
+            const userSubscriptions = await SubscriptionModel.find({ userId }, 'subjectId');
+            const subscribedSubjectIds = userSubscriptions.map(subscription => subscription.subjectId);
+            const subjects = await SubjectModel.find({ _id: { $in: subscribedSubjectIds } }, 'name urlSlug');
+            res.json(subjects);
+        } catch (error) {
+            res.status(500).json({ error: 'Hiba a tantárgyak lekérdezése közben!' });
+        }
+    });
+});
+
+app.delete('/deleteSubject/:id', async (req, res) => {
+    const { token } = req.cookies;
+    if (!token) {
+        return res.status(401).json({ error: 'Nincs érvényes token!' });
+    }
+    jwt.verify(token, secret, {}, async (err, info) => {
+        if (err) {
+            return res.status(401).json({ error: 'Érvénytelen token!' });
+        }
+        const userId = info.id;
+        const { id } = req.params;
+        try {
+            const subscription = await SubscriptionModel.findOne({
+                userId,
+                subjectId: id,
+            });
+            if (!subscription) {
+                return res.status(403).json({ error: 'Nincs feliratkozva erre a tantárgyra!' });
+            }
+            await SubscriptionModel.findByIdAndRemove(subscription._id);
+            res.json({ message: 'A tantárgy sikeresen törölve lett a feliratkozások közül!' });
+        } catch (error) {
+            return res.status(500).json({ error: 'Hiba a tantárgy törlése közben!' });
+        }
+    });
 });
 
 app.listen(4000);
