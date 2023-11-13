@@ -108,7 +108,7 @@ const EditProfileForm = () => {
             value={newEmail}
             onChange={ev => setnewEmail(ev.target.value)}></input>             
 
-            <input type="submit" class="btn" value="MÓDOSÍTOK" />
+            <input type="submit" className="btn" value="MÓDOSÍTOK" />
         </form>
 
         <form ref={formPassword} onSubmit={editPassword}>
@@ -129,13 +129,13 @@ const EditProfileForm = () => {
             <label>Új jelszó megerősítése:</label>
             <input type="password" name="confirmPassword" onChange={ev => setConfirmPassword(ev.target.value)}></input>         
 
-            <input type="submit" class="btn" value="MÓDOSÍTOK"/>
+            <input type="submit" className="btn" value="MÓDOSÍTOK"/>
         </form>
 
         <form ref={formDeleteProfile}>
             <h1 className='regh1'>Profil törlése</h1>    
             <h2 className='regh2'>FIGYELEM! A profil törlése esetén minden felvett tantárgyat elveszít!</h2>
-            <button onClick={handleDeleteProfilePopup} class="btn">PROFIL TÖRLÉSE</button>
+            <button onClick={handleDeleteProfilePopup} className="btn">PROFIL TÖRLÉSE</button>
         </form>
         <DeleteProfilePopup isOpen={showDeleteProfilePopup} onRequestClose={closeDeleteProfilePopupModal} />
     </div>

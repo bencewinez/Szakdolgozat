@@ -365,4 +365,38 @@ app.delete('/deleteSubject/:id', async (req, res) => {
     });
 });
 
+app.put('/updateSubject/:id', async (req, res) => {
+    const { token } = req.cookies;
+    if (!token) {
+        return res.status(401).json({ error: 'Nincs érvényes token!' });
+    }
+    jwt.verify(token, secret, {}, async (err, info) => {
+        if (err) {
+            return res.status(401).json({ error: 'Érvénytelen token!' });
+        }
+        const userId = info.id;
+        const { id } = req.params;
+        const { name, description, topic } = req.body;
+        try {
+            const subject = await SubjectModel.findOne({ _id: id, authorID: userId });
+            if (!subject) {
+                return res.status(403).json({ error: 'Nincs jogosultsága módosítani ezt a tantárgyat!' });
+            }
+            if (name) {
+                subject.name = name;
+            }
+            if (description) {
+                subject.description = description;
+            }
+            if (topic) {
+                subject.topic = topic;
+            }
+            await subject.save();
+            res.json({ message: 'A tantárgy sikeresen módosítva lett!' });
+        } catch (error) {
+            return res.status(500).json({ error: 'Hiba a tantárgy módosítása közben!' });
+        }
+    });
+});
+
 app.listen(4000);

@@ -99,7 +99,6 @@ return (
           </textarea>
 
         <label>Kategória kiválasztása:</label>
-
         <select name="category"
         onChange={ev => setSelectedTopic(ev.target.value)}
         required>

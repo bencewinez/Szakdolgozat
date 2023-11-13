@@ -5,6 +5,7 @@ import Footer from '../components/Footer';
 import { UserContext } from '../UserContext';
 import { FaAngleRight, FaEdit } from "react-icons/fa"
 import "../componentStyles/SubjectSite.css"
+import EditSubjectPopup from '../components/EditSubjectPopup';
 
 const SubjectSite = () => {
   const { urlSlug } = useParams();
@@ -91,7 +92,6 @@ const SubjectSite = () => {
           (subscribedSubject) => subscribedSubject.urlSlug === urlSlug
         );
         setIsSubscribed(isUserSubscribed);
-        console.log('isSubscribed:', isUserSubscribed);
       } catch (error) {
         console.error(error);
       }
@@ -102,8 +102,11 @@ const SubjectSite = () => {
     }
   }, [subject, urlSlug]);
 
-  console.log('User:', userInfo);
-  console.log('Subject:', subject);
+  const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
+
+  const handleEditClick = () => {
+    setIsEditPopupOpen(true);
+  };
 
   return (
     <div className='default_bg'>
@@ -116,7 +119,7 @@ const SubjectSite = () => {
           <p className='name'><strong>{subject.name}</strong></p>
           <p className='author'><strong>Készítette: {subject.author}</strong></p>
           {userInfo && userInfo.id === subject.authorID && (
-                <div className='edit'>
+                <div className='edit' onClick={handleEditClick}>
                   <FaEdit size={18} style={{ color: 'white' }} />
                   <p>
                     <strong>Módosítás</strong>
@@ -150,6 +153,7 @@ const SubjectSite = () => {
           <p className='description'>A leckék csak a tantárgy felvétele után lesznek láthatók!</p>
         </div>
       </div>
+      <EditSubjectPopup isOpen={isEditPopupOpen} onRequestClose={() => setIsEditPopupOpen(false)} subjectId={subject?.id} />
       <Footer />
     </div>
   );
