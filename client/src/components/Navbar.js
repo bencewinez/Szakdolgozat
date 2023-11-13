@@ -86,7 +86,7 @@ const Navbar  = () => {
                           <NavLink onClick={handleLoginClick} className='loginBtn'>BEJELENTKEZÉS</NavLink>
                           </li>
                           <li>
-                          <NavLink to="/regisztracio" activeClassName="active">REGISZTRÁCIÓ</NavLink>
+                          <NavLink to="/regisztracio" activeclassname="active">REGISZTRÁCIÓ</NavLink>
                           </li>
                     </ul>
       

@@ -60,6 +60,20 @@
     margin-bottom: 0px;
 }
 
+.edit{
+    display: flex;
+    align-items: center;
+    padding-bottom: 10px;
+    cursor: pointer;
+    width: fit-content;
+}
+
+.edit p{
+    color: white;
+    margin-bottom: 0;
+    margin-left: 5px;
+}
+
 .subscribeBtn {
     padding: 10px 10px;
     margin: 0 auto;
@@ -200,5 +214,9 @@
         transform: translateX(0%);
         width: 100%;
         height: fit-content;
+    }
+
+    .edit{
+        margin-left: 12px;
     }
 }

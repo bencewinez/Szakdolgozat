@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect  } from 'react'
+import React, { useContext, useState, useEffect, useRef  } from 'react'
 import { NavLink } from "react-router-dom"
 import ReactModal from 'react-modal'
 import { Navigate } from "react-router-dom"
@@ -119,7 +119,7 @@ const NavbarProfile = ({ isOpen, onRequestClose }) => {
                     </li>
                     ))}
                     <li className="logoutLi">
-                        <p>Vissza a tetejére!</p>
+                        <p className="logoutLia">Vissza a tetejére!</p>
                     </li>
                 </ul>
             </div>
@@ -148,7 +148,7 @@ const NavbarProfile = ({ isOpen, onRequestClose }) => {
                         </li>
                     ))}
                     <li className="logoutLi">
-                        <p>Vissza a tetejére!</p>
+                        <p className="logoutLia">Vissza a tetejére!</p>
                     </li>
                 </ul>
             </div>

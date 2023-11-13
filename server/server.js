@@ -269,16 +269,13 @@ app.get('/getMySubjects', async (req, res) => {
 app.get('/getSubject/:urlSlug', async (req, res) => {
     try {
         const { urlSlug } = req.params;
-        const subject = await SubjectModel.findOne({ urlSlug }, 'name description author topic');
-
+        const subject = await SubjectModel.findOne({ urlSlug }, 'name description author authorID topic');
         if (!subject) {
             return res.status(404).json({ error: 'A tantárgy nem található!' });
         }
-
-        const { name, description, author, topic } = subject;
+        const { name, description, author, authorID, topic } = subject;
         const category = await SubjectTopicModel.findById(topic, 'name');
-        const responseSubject = { name, description, author, topic: category.name };
-
+        const responseSubject = { name, description, author, authorID, topic: category.name };
         res.json(responseSubject);
     } catch (error) {
         res.status(500).json({ error: 'Hiba a tantárgy részleteinek lekérdezése közben!' });

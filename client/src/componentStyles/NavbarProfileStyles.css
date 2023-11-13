@@ -16,6 +16,8 @@
     position: fixed;
     right: 0;
     transition: 0.3s;
+    max-height: 390px;
+    overflow-y: auto;
 }
 
 .profileBar ul{
@@ -71,6 +73,7 @@
 .logoutLia{
     color: black;
     margin-bottom: 0;
+    cursor: pointer;
 }
 
 .usernameLia p:hover{
@@ -125,6 +128,7 @@
     margin-left: 6px;
     margin-top: -3px;
     cursor: pointer;
+    flex-shrink: 0;
 }
 
 .subjectContainer svg:hover{
