@@ -92,7 +92,7 @@ const EditProfileForm = () => {
 
     return (
     <div>
-        <form ref={formData} onSubmit={editData}>
+        <form ref={formData} onSubmit={editData} className='editProfileForm'>
             <h1 className='regh1'>Alap adatok</h1>
             <h2 className='regh2'>A kívánt adat(ok) módosítása után kattintson a "MÓDOSÍTOK" gombra!</h2>
 
@@ -111,7 +111,7 @@ const EditProfileForm = () => {
             <input type="submit" className="btn" value="MÓDOSÍTOK" />
         </form>
 
-        <form ref={formPassword} onSubmit={editPassword}>
+        <form ref={formPassword} onSubmit={editPassword} className='editProfileForm'>
             <h1 className='regh1'>Jelszó módosítása</h1>
 
             <label>Régi jelszó:</label>
@@ -132,7 +132,7 @@ const EditProfileForm = () => {
             <input type="submit" className="btn" value="MÓDOSÍTOK"/>
         </form>
 
-        <form ref={formDeleteProfile}>
+        <form ref={formDeleteProfile} className='editProfileForm'>
             <h1 className='regh1'>Profil törlése</h1>    
             <h2 className='regh2'>FIGYELEM! A profil törlése esetén minden felvett tantárgyat elveszít!</h2>
             <button onClick={handleDeleteProfilePopup} className="btn">PROFIL TÖRLÉSE</button>

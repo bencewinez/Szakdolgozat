@@ -8,7 +8,7 @@
     z-index: 999;
 }
   
-form {
+.editSubjectForm {
     display: flex;
     flex-direction: column;
     padding: 2rem 1rem;
@@ -22,13 +22,13 @@ form {
     background-color: whitesmoke;
 }
 
-label {
+.editSubjectForm label {
     color: black;
     margin-bottom: 0.5rem;
     font-size: 1.2rem;
 }
   
-form input {
+.editSubjectForm input {
     margin-bottom: 1rem;
     padding: 10px 18px;
     font-size: 1rem;
@@ -56,7 +56,7 @@ form input {
 }
 
 @media screen and (max-height: 880px) {
-    form {
+    .editSubjectForm {
         padding: 1rem 1rem !important;
         margin-top: 0rem !important;
         margin-bottom: 0rem !important;

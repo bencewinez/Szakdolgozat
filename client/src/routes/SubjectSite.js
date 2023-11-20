@@ -166,7 +166,7 @@ const SubjectSite = () => {
           <p className='description'>A leckék csak a tantárgy felvétele után lesznek láthatók!</p>
         </div>
       </div>
-      <EditSubjectPopup isOpen={isEditPopupOpen} onRequestClose={() => setIsEditPopupOpen(false)} subjectId={subject?.id} />
+      <EditSubjectPopup isOpen={isEditPopupOpen} onRequestClose={() => setIsEditPopupOpen(false)} subjectId={subject?._id} />
       <Footer />
     </div>
   );

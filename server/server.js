@@ -397,20 +397,17 @@ app.put('/updateSubject/:id', async (req, res) => {
         }
         const userId = info.id;
         const { id } = req.params;
-        const { name, description, topic } = req.body;
+        const { name, description } = req.body;
         try {
             const subject = await SubjectModel.findOne({ _id: id, authorID: userId });
             if (!subject) {
                 return res.status(403).json({ error: 'Nincs jogosultsága módosítani ezt a tantárgyat!' });
             }
-            if (name) {
+            if (name !== undefined && name !== subject.name) {
                 subject.name = name;
             }
-            if (description) {
+            if (description !== undefined && description !== subject.description) {
                 subject.description = description;
-            }
-            if (topic) {
-                subject.topic = topic;
             }
             await subject.save();
             res.json({ message: 'A tantárgy sikeresen módosítva lett!' });
@@ -420,4 +417,9 @@ app.put('/updateSubject/:id', async (req, res) => {
     });
 });
 
-app.listen(4000);
+
+const PORT = 4000;
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});

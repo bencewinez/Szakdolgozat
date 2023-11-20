@@ -3,40 +3,28 @@ import React, { useRef, useState, useEffect } from 'react';
 import { FaTimes } from "react-icons/fa";
 import ReactModal from 'react-modal';
 import "../componentStyles/EditSubjectPopupStyles.css"
+import { useParams } from 'react-router-dom';
 
 const EditSubjectPopup = ({ isOpen, onRequestClose, subjectId, onSubjectEdit }) => {
-    const [subjectTopics, setSubjectTopics] = useState([]);
+    const { urlSlug } = useParams();
     const [newName, setNewName] = useState('');
     const [newDescription, setNewDescription] = useState('');
-    const [newTopic, setNewTopic] = useState('');
 
     const form = useRef();
 
     useEffect(() => {
-        if (subjectId) {
-            fetch(`http://localhost:4000/getSubject/${subjectId}`)
+        if (urlSlug) {
+            fetch(`http://localhost:4000/getSubject/${urlSlug}`)
                 .then((response) => response.json())
                 .then((data) => {
                     setNewName(data.name);
                     setNewDescription(data.description);
-                    setNewTopic(data.topic);
                 })
                 .catch((error) => {
                     console.error('Hiba a tantárgy részleteinek lekérdezésekor: ', error);
                 });
         }
-    }, [subjectId]);
-
-    useEffect(() => {
-        fetch('http://localhost:4000/getSubjectTopics')
-          .then((response) => response.json())
-          .then((data) => {
-            setSubjectTopics(data);
-          })
-          .catch((error) => {
-            console.error('Hiba a Tantárgy Témakörök lekérdezésekor: ', error);
-          });
-    }, []);
+    }, [urlSlug]);
 
     const handleEditSubject = async (e) => {
         e.preventDefault();
@@ -49,7 +37,6 @@ const EditSubjectPopup = ({ isOpen, onRequestClose, subjectId, onSubjectEdit }) 
                 body: JSON.stringify({
                     name: newName,
                     description: newDescription,
-                    topic: newTopic,
                 }),
                 credentials: 'include',
             });
@@ -64,6 +51,7 @@ const EditSubjectPopup = ({ isOpen, onRequestClose, subjectId, onSubjectEdit }) 
         } finally {
             onRequestClose();
         }
+        window.location.reload();
     }
 
   return (
@@ -76,7 +64,7 @@ const EditSubjectPopup = ({ isOpen, onRequestClose, subjectId, onSubjectEdit }) 
     center
     >
     <div>
-        <form ref={form} onSubmit={handleEditSubject}>
+        <form ref={form} onSubmit={handleEditSubject} className='editSubjectForm'>
             <div className="editSubjectClose" onClick={onRequestClose}>
             <FaTimes size={25} style={{ color: "#000" }} />
             </div>
@@ -99,19 +87,8 @@ const EditSubjectPopup = ({ isOpen, onRequestClose, subjectId, onSubjectEdit }) 
             value={newDescription}
             maxLength="300"
             onChange={ev => setNewDescription(ev.target.value)}
-            required>
+            >
             </textarea>
-
-            <label>Új témakör:</label>
-            <select name="category"
-                onChange={ev => setNewTopic(ev.target.value)}
-                required>
-                <option value="">Válasszon kategóriát!</option>
-                {subjectTopics.map((subjectTopic) => (
-                <option key={subjectTopic._id} value={subjectTopic._id}>{subjectTopic.name}</option>
-                ))}
-            </select>
-
             <input type="submit" className="btn" value="Mentés" />
         </form>
     </div>
