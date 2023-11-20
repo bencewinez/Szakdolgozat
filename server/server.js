@@ -179,11 +179,11 @@ app.post('/deleteProfile', async (req, res) => {
         } 
         const userId = info.id;
         try {
-            const userDoc = await User.findById(userId);
+            await SubscriptionModel.deleteMany({ userId });
+            const userDoc = await User.findByIdAndRemove(userId);
             if (!userDoc) {
                 return res.status(404).json({ error: 'A felhasználó nem található meg!' });
             }
-            await User.findByIdAndRemove(userId);
             res.clearCookie('token');
             res.json({ message: 'A profil sikeresen törölve lett!' });
         } catch (error) {

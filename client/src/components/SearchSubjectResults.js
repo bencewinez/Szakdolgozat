@@ -5,7 +5,7 @@ import SubjectCard from './SubjectCard';
 import '../componentStyles/SearchSubjectTopics.css';
 import '../componentStyles/SearchSubjectResultsStyles.css';
 
-const SearchSubjectResults = ({ selectedTopic }) => {
+const SearchSubjectResults = ({ selectedTopic, searchText }) => {
   const [subjects, setSubjects] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
@@ -24,15 +24,27 @@ const SearchSubjectResults = ({ selectedTopic }) => {
         const data = await response.json();
         const totalCount = data.totalCount;
         const calculatedMaxPage = Math.ceil(totalCount / pageSize);
-        setMaxPage(calculatedMaxPage);       
-        setSubjects(data.subjects);
+        setMaxPage(calculatedMaxPage);
+        const filteredSubjects = data.subjects.filter((subject) => {
+          const { name, author, description } = subject;
+          const lowerCaseSearchText = searchText.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+          const lowerCaseName = name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+          const lowerCaseAuthor = author.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+          const lowerCaseDescription = description.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+          return (
+            lowerCaseName.includes(lowerCaseSearchText) ||
+            lowerCaseAuthor.includes(lowerCaseSearchText) ||
+            lowerCaseDescription.includes(lowerCaseSearchText)
+          );
+        });
+        setSubjects(filteredSubjects);
       } catch (error) {
         console.error('Hiba a Tantárgyak lekérdezése közben:', error);
       }
     };
-  
+
     fetchData();
-  }, [currentPage, pageSize, selectedTopic]);
+  }, [currentPage, pageSize, selectedTopic, searchText]);
 
   const handlePageChange = (action) => {
     let newPage;

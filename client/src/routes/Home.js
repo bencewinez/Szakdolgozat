@@ -5,12 +5,20 @@ import SearchSubjectBar from '../components/SearchSubjectBar'
 import '../componentStyles/HomeStyles.css'
 import SearchSubjectResults from '../components/SearchSubjectResults'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const [selectedTopic, setSelectedTopic] = useState(null);
+  const [searchText, setSearchText] = useState('');
+  const navigate = useNavigate();
 
   const handleTopicSelect = (topic) => {
     setSelectedTopic(topic);
+  };
+
+  const handleSearch = (text) => {
+    setSearchText(text);
+    navigate(`/?page=1&pageSize=5&topic=${selectedTopic}&search=${text}`);
   };
 
   return (
@@ -22,10 +30,10 @@ const Home = () => {
         </div>
         <div className='homeColumn'>
           <div className='searchBarBox'>
-            <SearchSubjectBar />
+            <SearchSubjectBar onSearch={handleSearch} />
           </div>
           <div className='resultBox'>
-            <SearchSubjectResults selectedTopic={selectedTopic} />
+            <SearchSubjectResults selectedTopic={selectedTopic} searchText={searchText} />
           </div>
         </div>
       </div>
