@@ -44,9 +44,9 @@ return (
         </div>
     
         <h1 className='deleteProfileh1'>Biztosan törölni szeretné a tantárgyat a meglévők közül?</h1>
-    
-        <input type="submit" class="btn" value="IGEN" />
-        <button class="btn" onClick={onRequestClose}>MÉGSEM</button>
+        
+        <input type="submit" className="btn" value="IGEN" />
+        <button className="btn" onClick={onRequestClose}>MÉGSEM</button>
         </form>
     </div>
     </ReactModal>

@@ -1,0 +1,38 @@
+.homeRow{
+    display: flex;
+    flex-direction: row;
+}
+
+.homeColumn{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    margin-right: 10px;
+}
+  
+.resultBox {
+    height: fit-content;
+}
+
+@media screen and (max-width: 1100px) {
+    .homeRow {
+        flex-direction: column;
+    }
+
+    .homeColumn {
+        flex-direction: column;
+    }
+
+    .searchSubjectTopics {
+        order: 1;
+    }
+    
+    .searchBarBox {
+        order: 2;
+    }
+    
+    .resultBox {
+        order: 3;
+    }
+}

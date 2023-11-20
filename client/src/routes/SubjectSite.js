@@ -3,15 +3,18 @@ import { useParams } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { UserContext } from '../UserContext';
-import { FaAngleRight, FaEdit } from "react-icons/fa"
-import "../componentStyles/SubjectSite.css"
+import { FaAngleRight, FaEdit } from "react-icons/fa";
+import "../componentStyles/SubjectSite.css";
 import EditSubjectPopup from '../components/EditSubjectPopup';
+import DeleteSubjectPopup from '../components/DeleteSubjectPopup';
 
 const SubjectSite = () => {
   const { urlSlug } = useParams();
   const [subject, setSubject] = useState(null);
   const { userInfo } = useContext(UserContext);
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const [selectedSubject, setSelectedSubject] = useState(null);
+  const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
   const scrollDistanceThreshold = 140;
 
   useEffect(() => {
@@ -49,6 +52,7 @@ const SubjectSite = () => {
         }
         const subjectData = await response.json();
         setSubject(subjectData);
+        setSelectedSubject(subjectData._id);
       } catch (error) {
         console.error(error);
         alert('Hiba történt a tantárgy lekérdezése közben! Kérjük próbálja meg újra később!');
@@ -127,11 +131,20 @@ const SubjectSite = () => {
                 </div>
           )}
         </div>
-        {!isSubscribed && (
+        {!isSubscribed ? (
           <div className='subscribeBtn' onClick={handleSubscribe}>
-            FELIRATKOZÁS
+          FELIRATKOZÁS
+          </div>
+        ) : (
+          <div className='deleteSubjectBtn'
+            onClick={() => {
+            setSelectedSubject(subject._id);
+            setIsDeletePopupOpen(true);
+            }}>
+            FELIRATKOZVA
           </div>
         )}
+        <DeleteSubjectPopup isOpen={isDeletePopupOpen} onRequestClose={() => setIsDeletePopupOpen(false)} subjectId={selectedSubject}/>
       </div>
       </>
       ) : (

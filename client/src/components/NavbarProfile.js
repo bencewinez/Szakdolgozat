@@ -187,11 +187,7 @@ const NavbarProfile = ({ isOpen, onRequestClose }) => {
                 </ul>
             </div>
         )}
-        <DeleteSubjectPopup
-            isOpen={isDeletePopupOpen}
-            onRequestClose={() => setIsDeletePopupOpen(false)}
-            subjectId={selectedSubject}
-        />
+        <DeleteSubjectPopup isOpen={isDeletePopupOpen} onRequestClose={() => setIsDeletePopupOpen(false)} subjectId={selectedSubject}/>
         </ReactModal>
     );
 }

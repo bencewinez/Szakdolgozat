@@ -269,16 +269,37 @@ app.get('/getMySubjects', async (req, res) => {
 app.get('/getSubject/:urlSlug', async (req, res) => {
     try {
         const { urlSlug } = req.params;
-        const subject = await SubjectModel.findOne({ urlSlug }, 'name description author authorID topic');
+        const subject = await SubjectModel.findOne({ urlSlug }, ' _id, name description author authorID topic');
         if (!subject) {
             return res.status(404).json({ error: 'A tantárgy nem található!' });
         }
-        const { name, description, author, authorID, topic } = subject;
+        const { _id, name, description, author, authorID, topic } = subject;
         const category = await SubjectTopicModel.findById(topic, 'name');
-        const responseSubject = { name, description, author, authorID, topic: category.name };
+        const responseSubject = { _id, name, description, author, authorID, topic: category.name };
         res.json(responseSubject);
     } catch (error) {
         res.status(500).json({ error: 'Hiba a tantárgy részleteinek lekérdezése közben!' });
+    }
+});
+
+app.get('/getAllSubjects', async (req, res) => {
+    try {
+        const { page = 1, pageSize = 3, topic } = req.query;
+        const query = topic ? { topic: topic } : {};
+        const totalCount = await SubjectModel.countDocuments(query);
+        const maxPage = Math.ceil(totalCount / pageSize);
+        const skip = (page - 1) * pageSize;
+        const subjects = await SubjectModel.find(query, '_id name description author authorID topic urlSlug')
+            .skip(skip)
+            .limit(parseInt(pageSize));
+        const allSubjects = await Promise.all(subjects.map(async (subject) => {
+            const { _id, name, description, author, authorID, topic, urlSlug } = subject;
+            const category = await SubjectTopicModel.findById(topic, 'name');
+            return { _id, name, description, author, authorID, topic: category.name, urlSlug };
+        }));  
+        res.json({ totalCount, maxPage, subjects: allSubjects });
+    } catch (error) {
+        res.status(500).json({ error: 'Hiba az összes tantárgy lekérdezése közben!' });
     }
 });
 

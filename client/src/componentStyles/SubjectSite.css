@@ -41,6 +41,7 @@
     margin: 0px 0px;
     font-weight: bold;
     font-size: x-large;
+    text-shadow: 2px 2px rgb(80, 80, 80);
 }
 
 .author{
@@ -50,6 +51,7 @@
     margin: 0px 12px;
     font-weight: bold;
     font-size: large;
+    text-shadow: 2px 2px rgb(80, 80, 80);
 }
 
 .description{
@@ -93,6 +95,36 @@
 }
   
 .subscribeBtn a{
+    text-transform: uppercase;
+    background: rgb(32, 192, 87) !important;
+    color: white !important;
+    font-size: large !important;
+    font-weight: bold !important;
+    cursor: pointer;
+    border-radius: 4px;
+    position: relative;
+    z-index: 1;
+}
+
+.deleteSubjectBtn {
+    padding: 10px 10px;
+    margin: 0 auto;
+    text-transform: uppercase;
+    background: white !important;
+    color: rgb(32, 192, 87) !important;
+    font-size: large !important;
+    font-weight: bold !important;
+    cursor: pointer;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+}
+  
+.deleteSubjectBtn a{
     text-transform: uppercase;
     background: rgb(32, 192, 87) !important;
     color: white !important;
@@ -219,5 +251,24 @@
 
     .edit{
         margin-left: 12px;
+    }
+
+    .deleteSubjectBtn {
+        margin-right: 10px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .introBar{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: rgb(32, 192, 87);
+        padding-top: 90px; 
+        height: fit-content;
+    }
+
+    .deleteSubjectBtn {
+        margin-bottom: 10px;
     }
 }

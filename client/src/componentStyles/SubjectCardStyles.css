@@ -1,0 +1,21 @@
+.subjectCard {
+    border: 1px solid #ccc;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    background-color: white;
+}
+  
+.subjectCard h3 {
+    margin-bottom: 8px;
+    cursor: pointer;
+}
+
+.subjectCard h3:hover {
+    color: rgb(32, 192, 87);
+    transition: 0.3s;
+}
+  
+.subjectCard p {
+    margin: 0;
+}

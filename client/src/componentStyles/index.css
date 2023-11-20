@@ -67,26 +67,8 @@ ul{
 }
 
 .btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  color: #fff;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.35);
   transition: 0.3s;
-}
-
-.home_h1 h1{
-  padding-top: 14rem;
-  padding-bottom: 46rem;
-  text-align: center;
-  color: white;
-  font-size: 5rem;
-  text-shadow: 0 0 15px rgba(0, 0, 0, 1);
-}
-
-.home_h1 a{
-  color: white;
-}
-
-.home_h1 a:hover{
-  color: rgb(32, 192, 87);
 }
 
 .default_bg{
@@ -125,15 +107,4 @@ ul{
   font-size: 1rem;
   color: black;
   text-align: center;
-}
-
-@media screen and (max-width: 770px) {
-  .home_h1 h1{
-    padding-top: 14rem;
-    padding-bottom: 10rem;
-    text-align: center;
-    color: white;
-    font-size: 3rem;
-    text-shadow: 0 0 15px rgba(0, 0, 0, 1);
-  }
 }
