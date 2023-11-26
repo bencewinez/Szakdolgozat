@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { UserContext } from '../UserContext';
-import { FaAngleRight, FaEdit } from "react-icons/fa";
+import { FaAngleRight, FaEdit, FaRegPlusSquare } from "react-icons/fa";
 import "../componentStyles/SubjectSite.css";
 import EditSubjectPopup from '../components/EditSubjectPopup';
 import DeleteSubjectPopup from '../components/DeleteSubjectPopup';
@@ -112,6 +112,8 @@ const SubjectSite = () => {
     setIsEditPopupOpen(true);
   };
 
+
+
   return (
     <div className='default_bg'>
       <Navbar />
@@ -128,6 +130,14 @@ const SubjectSite = () => {
                   <p>
                     <strong>Módosítás</strong>
                   </p>
+                </div>
+          )}
+          {userInfo && userInfo.id === subject.authorID && (
+                <div className='edit'>      
+                    <NavLink to={`/tantargyak/${urlSlug}/ujlecke`}>
+                    <p><strong>Új lecke hozzáadása</strong></p>
+                    </NavLink>
+                  <FaRegPlusSquare size={18} style={{ color: 'white' }} />
                 </div>
           )}
         </div>

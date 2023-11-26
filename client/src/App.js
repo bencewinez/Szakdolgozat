@@ -7,6 +7,8 @@ import Adatvedelem from './routes/Adatvedelem';
 import Profile from './routes/Profile';
 import AddSubject from './routes/AddSubject';
 import SubjectSite from './routes/SubjectSite';
+import AddLesson from './routes/AddLesson';
+
 import { UserContext, UserContextProvider } from './UserContext';
 
 
@@ -23,6 +25,7 @@ const App = () => {
             <Route path='/profil' element={ <Profile /> } />
             <Route path='/ujtantargy' element={ <AddSubject/> }/>
             <Route path="/tantargyak/:urlSlug" element={<SubjectSite />} />
+            <Route path="/tantargyak/:urlSlug/ujlecke" element={<AddLesson />} />
             <Route path='/aszf' element={ <Aszf /> } />
             <Route path='/adatvedelmi_nyilatkozat' element={ <Adatvedelem /> } />
             <Route path='*' element={ <NotFound /> } />

@@ -71,9 +71,10 @@
 }
 
 .edit p{
-    color: white;
+    color: white !important;
     margin-bottom: 0;
     margin-left: 5px;
+    margin-right: 5px;
 }
 
 .subscribeBtn {

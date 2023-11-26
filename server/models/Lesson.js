@@ -7,6 +7,7 @@ const LessonSchema = new Schema({
     authorID: {type: String, required: true},
     urlSlug: {type: String, required: true},
     releaseDate: {type: Date, required: true},
+    content: { type: String, required: true },
 });
 
 const LessonModel = model('Lesson', LessonSchema);
