@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import Navbar from '../components/Navbar'
@@ -10,6 +11,60 @@ const AddLesson = () => {
 
   const [lessonName, setLessonName] = useState('');
   const [lessonReleaseDate, setLessonReleaseDate] = useState('');
+  const [subjectUrlSlug, setSubjectUrlSlug] = useState('');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const urlParts = window.location.pathname.split('/');
+    const foundSlugIndex = urlParts.findIndex(part => part === 'tantargyak');
+    
+    if (foundSlugIndex !== -1 && urlParts.length > foundSlugIndex + 1) {
+      setSubjectUrlSlug(urlParts[foundSlugIndex + 1]);
+    }
+  }, []);
+
+  const handleCreateLesson = async () => {
+    if (!lessonName || !lessonReleaseDate || !value) {
+      alert('Minden mezőt ki kell töltenie!');
+      return;
+    }
+    const currentDate = new Date().toISOString().slice(0, 16).replace("T", " ");
+    if (lessonReleaseDate < currentDate) {
+      alert('A megjelenés dátuma nem lehet korábbi a jelenlegi időpontnál!');
+      return;
+    }
+    try {
+      const response = await fetch(`http://localhost:4000/createLesson/${subjectUrlSlug}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          lessonName,
+          lessonReleaseDate,
+          value,
+        }),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log('A lecke sikeresen létrehozva! Lecke ID:', data.lessonID);
+        alert('A lecke sikeresen létre lett hozva, mely a tantárgy oldalán megjelenik a kiválasztott időpontban!');
+        navigate(`/tantargyak/${encodeURIComponent(subjectUrlSlug)}`);
+      } else {
+        const errorData = await response.json();
+        if (errorData.error === 'Ez a lecke név már létezik!') {
+          alert('Már létezik lecke ezzel a névvel a tantárgyhoz, kérjük módosítsa azt!');
+        } else {
+          console.error('Hiba a lecke létrehozása során:', response.statusText);
+          alert('Hiba a lecke létrehozása során! Próbálja meg később!');
+        }
+      }
+    } catch (error) {
+      console.error('Hiba a lecke létrehozása során:', error);
+      alert('Hiba a lecke létrehozása során! Próbálja meg később!');
+    }
+  };
 
   const quillStyle = {
     height: '85vh',
@@ -53,7 +108,7 @@ const AddLesson = () => {
         <div className='newLessonBoxIntro'>
           <h1>Új lecke hozzáadása</h1>
           <h5>Stílus visszavonásához jelölje ki a területet és kattintson az utolsó 'Tx' gombra!</h5>
-          <button className='submitBtn'>LÉTREHOZÁS</button>
+          <button className='submitBtn' onClick={handleCreateLesson}>LÉTREHOZÁS</button>
           <br></br>
         </div>
         <div className='newLessonForm'>
@@ -63,7 +118,7 @@ const AddLesson = () => {
             type="text"
             value={lessonName}
             onChange={ev => setLessonName(ev.target.value)}
-            required>           
+            >           
             </input>
 
             <label>Megjelenés dátuma:</label>
@@ -71,7 +126,7 @@ const AddLesson = () => {
             type="datetime-local"
             value={lessonReleaseDate}
             onChange={ev => setLessonReleaseDate(ev.target.value)}
-            required>           
+            >           
             </input>
           </form>
         </div>

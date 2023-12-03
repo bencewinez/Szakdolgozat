@@ -1,0 +1,25 @@
+.lessonCard {
+    border: 1px solid #ccc;
+    padding: 0.5rem;
+    margin-right: 1rem;
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    background-color: whitesmoke;
+}
+
+.lessonCard h3 {
+    color: black;
+    font-size: 1.5rem;
+    margin-bottom: 4px;
+    cursor: pointer;
+}
+
+.lessonCard h3:hover {
+    color: rgb(32, 192, 87);
+    transition: 0.3s;
+}
+
+.lessonCard p {
+    margin: 0;
+}

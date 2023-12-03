@@ -1,3 +1,4 @@
+import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './routes/Home';
 import Registration from './routes/Registration';
@@ -8,11 +9,9 @@ import Profile from './routes/Profile';
 import AddSubject from './routes/AddSubject';
 import SubjectSite from './routes/SubjectSite';
 import AddLesson from './routes/AddLesson';
+import LessonSite from './routes/LessonSite';
 
 import { UserContext, UserContextProvider } from './UserContext';
-
-
-import React from 'react'
 
 const App = () => {
   return (
@@ -26,6 +25,7 @@ const App = () => {
             <Route path='/ujtantargy' element={ <AddSubject/> }/>
             <Route path="/tantargyak/:urlSlug" element={<SubjectSite />} />
             <Route path="/tantargyak/:urlSlug/ujlecke" element={<AddLesson />} />
+            <Route path="/leckek/:lUrlSlug" element={<LessonSite />} />
             <Route path='/aszf' element={ <Aszf /> } />
             <Route path='/adatvedelmi_nyilatkozat' element={ <Adatvedelem /> } />
             <Route path='*' element={ <NotFound /> } />

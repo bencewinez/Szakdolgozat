@@ -11,6 +11,7 @@ const SubjectTopic = require('./models/SubjectTopics');
 const SubjectTopicModel = require('./models/SubjectTopics');
 const SubjectModel = require('./models/Subject');
 const SubscriptionModel = require('./models/Subscription');
+const LessonModel = require('./models/Lesson');
 
 const salt = bcrypt.genSaltSync(10);
 const secret = 'fmsdazgh4245dashd83242dyid';
@@ -43,12 +44,10 @@ app.post('/register', async (req,res) => {
 app.post('/login', async (req,res) => {
     const {email, password} = req.body;
     const userDoc = await User.findOne({email});
-
     if (!userDoc) {
         res.status(400).json('Nem található felhasználó ilyen e-mail címmel.');
         return;
     }
-
     const passOk = bcrypt.compareSync(password, userDoc.password);
     if (passOk) {
         jwt.sign({email,id:userDoc._id}, secret, {}, (err,token) => {
@@ -269,13 +268,13 @@ app.get('/getMySubjects', async (req, res) => {
 app.get('/getSubject/:urlSlug', async (req, res) => {
     try {
         const { urlSlug } = req.params;
-        const subject = await SubjectModel.findOne({ urlSlug }, ' _id, name description author authorID topic');
+        const subject = await SubjectModel.findOne({ urlSlug }, ' _id, name description author authorID topic lessonsCount');
         if (!subject) {
             return res.status(404).json({ error: 'A tantárgy nem található!' });
         }
-        const { _id, name, description, author, authorID, topic } = subject;
+        const { _id, name, description, author, authorID, topic, lessonsCount } = subject;
         const category = await SubjectTopicModel.findById(topic, 'name');
-        const responseSubject = { _id, name, description, author, authorID, topic: category.name };
+        const responseSubject = { _id, name, description, author, authorID, topic: category.name, lessonsCount };
         res.json(responseSubject);
     } catch (error) {
         res.status(500).json({ error: 'Hiba a tantárgy részleteinek lekérdezése közben!' });
@@ -417,6 +416,114 @@ app.put('/updateSubject/:id', async (req, res) => {
     });
 });
 
+app.post('/createLesson/:subjectUrlSlug', async (req, res) => {
+    const { token } = req.cookies;
+    if (!token) {
+      return res.status(401).json({ error: 'Nincs érvényes token!' });
+    }
+    jwt.verify(token, secret, {}, async (err, userInfo) => {
+      if (err) {
+        return res.status(401).json({ error: 'Érvénytelen token!' });
+      }
+      const userId = userInfo.id;
+      const { subjectUrlSlug } = req.params;
+      const { lessonName, lessonReleaseDate, value } = req.body;
+      try { 
+        const subject = await SubjectModel.findOne({ urlSlug: subjectUrlSlug, authorID: userId });
+        if (!subject) {
+          return res.status(404).json({ error: 'Nincs jogosultsága létrehozni ezt a leckét ehhez a tantárgyhoz!' });
+        }
+        const currentDate = new Date();
+        const lessonDate = new Date(lessonReleaseDate); 
+        if (lessonDate < currentDate) {
+          return res.status(400).json({ error: 'A lecke megjelenési dátuma nem lehet a jelenlegi időpont előtt!' });
+        }
+        if (!value.trim()) {
+          return res.status(400).json({ error: 'A lecke tartalma nem lehet üres!' });
+        }
+        const lessonUrlSlug = `${subjectUrlSlug}_${lessonName
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/[^a-zA-Z0-9 ]/g, '')
+            .replace(/\s+/g, '_')
+            .toLowerCase()}`;
+        const existingLesson = await LessonModel.findOne({
+            lUrlSlug: lessonUrlSlug
+        });
+        if (existingLesson) {
+            return res.status(400).json({ error: 'Ez a lecke név már létezik!' });
+        }
+        const newLesson = new LessonModel({
+          name: lessonName,
+          subjectID: subject._id,
+          authorID: userId,
+          lUrlSlug: lessonUrlSlug,
+          releaseDate: lessonReleaseDate,
+          content: value,
+        });
+        await newLesson.save();
+        subject.lessonsCount += 1;
+        await subject.save();
+        res.json({ lessonID: newLesson._id, message: 'A lecke sikeresen létrehozva!' });
+      } catch (error) {
+        console.error('Hiba történt a lecke létrehozása során:', error);
+        res.status(500).json({ error: 'Hiba történt a lecke létrehozása során!' });
+      }
+    });
+});
+
+const formatReleaseDate = (date) => {
+    const formattedDate = new Date(date);
+    return formattedDate.toLocaleDateString('hu-HU', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: false,
+    });
+};
+
+app.get('/getLesson/:lUrlSlug', async (req, res) => {
+    try {
+        const { lUrlSlug } = req.params;
+        const lesson = await LessonModel.findOne({ lUrlSlug });
+        if (!lesson) {
+            return res.status(404).json({ error: 'Hiba a lecke lekérdezése közben!' });
+        }
+        const subject = await SubjectModel.findById(lesson.subjectID, 'name');
+        const author = await User.findById(lesson.authorID, 'name');
+        const lessonData = {
+            name: lesson.name,
+            subjectName: subject.name,
+            authorName: author.name,
+            releaseDate: formatReleaseDate(lesson.releaseDate),
+            content: lesson.content,
+            lUrlSlug: lesson.lUrlSlug,
+        };
+        res.json(lessonData);
+    } catch (error) {
+        console.error('Hiba történt a lecke létrehozása során:', error);
+        res.status(500).json({ error: 'Hiba történt a lecke létrehozása során!' });
+    }
+});
+
+app.get('/getLessons/:subjectId', async (req, res) => {
+    try {
+        const { subjectId } = req.params;
+        const lessons = await LessonModel.find({ subjectID: subjectId }, 'name authorName releaseDate lUrlSlug');
+        const formattedLessons = lessons.map((lesson) => ({
+            name: lesson.name,
+            authorName: lesson.authorName,
+            releaseDate: formatReleaseDate(lesson.releaseDate),
+            lUrlSlug: lesson.lUrlSlug,
+        }));
+        res.json(formattedLessons);
+    } catch (error) {
+        console.error('Hiba történt a leckék létrehozása során:', error);
+        res.status(500).json({ error: 'Hiba történt a leckék létrehozása során!' });
+    }
+});
 
 const PORT = 4000;
 
