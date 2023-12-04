@@ -199,9 +199,12 @@ const SubjectSite = () => {
           {isSubscribed && subject.lessonsCount > 0 ? (
             <div className='lessonBox'>
               <p className='description'><strong>Leckék:</strong></p>
-              {lessons.map((lesson) => (
-                <LessonCard key={lesson._id} lesson={lesson} />
-              ))}
+              {lessons.map((lesson) => {
+                console.log(lesson);
+                return (
+                  <LessonCard key={lesson._id} lesson={lesson} userId={userInfo?.id} />
+                );
+              })}
             </div>
           ) : isSubscribed ? (
             <p className='description'>Még nem jelent meg lecke a tantárgyhoz.</p>
@@ -220,6 +223,7 @@ const SubjectSite = () => {
         <div className='subjectBox'></div>
       </>
     )}
+    <EditSubjectPopup isOpen={isEditPopupOpen} onRequestClose={() => setIsEditPopupOpen(false)} subjectId={subject?._id} />
     <Footer />
   </div>
   );

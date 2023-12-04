@@ -12,6 +12,7 @@ const SubjectTopicModel = require('./models/SubjectTopics');
 const SubjectModel = require('./models/Subject');
 const SubscriptionModel = require('./models/Subscription');
 const LessonModel = require('./models/Lesson');
+const LessonStatusModel = require('./models/LessonStatus');
 
 const salt = bcrypt.genSaltSync(10);
 const secret = 'fmsdazgh4245dashd83242dyid';
@@ -178,6 +179,7 @@ app.post('/deleteProfile', async (req, res) => {
         } 
         const userId = info.id;
         try {
+            await LessonStatusModel.deleteMany({ userID: userId });
             await SubscriptionModel.deleteMany({ userId });
             const userDoc = await User.findByIdAndRemove(userId);
             if (!userDoc) {
@@ -330,6 +332,13 @@ app.post('/subscribe/:urlSlug', async (req, res) => {
           subjectId: subject._id,
         });
         await subscription.save();
+        const lessons = await LessonModel.find({ subjectID: subject._id });
+        const lessonStatuses = lessons.map(lesson => ({
+            lessonID: lesson._id,
+            userID: userId,
+            status: 0,
+        }));
+        await LessonStatusModel.create(lessonStatuses);
         res.json({ message: 'Sikeres feliratkozás!' });
       } catch (error) {
         res.status(500).json({ error: 'Hiba a feliratkozás során!' });
@@ -377,6 +386,7 @@ app.delete('/deleteSubject/:id', async (req, res) => {
             if (!subscription) {
                 return res.status(403).json({ error: 'Nincs feliratkozva erre a tantárgyra!' });
             }
+            await LessonStatusModel.deleteMany({ userID: userId });
             await SubscriptionModel.findByIdAndRemove(subscription._id);
             res.json({ message: 'A tantárgy sikeresen törölve lett a feliratkozások közül!' });
         } catch (error) {
@@ -462,6 +472,16 @@ app.post('/createLesson/:subjectUrlSlug', async (req, res) => {
           content: value,
         });
         await newLesson.save();
+        const subscribers = await SubscriptionModel.find({ subjectId: subject._id });
+        const newLessonStatuses = await Promise.all(subscribers.map(async (subscriber) => {
+            const user = await User.findById(subscriber.userId);
+            return {
+                lessonID: newLesson._id,
+                userID: user._id,
+                status: 0,
+            };
+        }));
+        await LessonStatusModel.create(newLessonStatuses);
         subject.lessonsCount += 1;
         await subject.save();
         res.json({ lessonID: newLesson._id, message: 'A lecke sikeresen létrehozva!' });
@@ -494,6 +514,7 @@ app.get('/getLesson/:lUrlSlug', async (req, res) => {
         const subject = await SubjectModel.findById(lesson.subjectID, 'name');
         const author = await User.findById(lesson.authorID, 'name');
         const lessonData = {
+            _id: lesson._id,
             name: lesson.name,
             subjectName: subject.name,
             authorName: author.name,
@@ -511,8 +532,9 @@ app.get('/getLesson/:lUrlSlug', async (req, res) => {
 app.get('/getLessons/:subjectId', async (req, res) => {
     try {
         const { subjectId } = req.params;
-        const lessons = await LessonModel.find({ subjectID: subjectId }, 'name authorName releaseDate lUrlSlug');
+        const lessons = await LessonModel.find({ subjectID: subjectId }, '_id name authorName releaseDate lUrlSlug');
         const formattedLessons = lessons.map((lesson) => ({
+            _id: lesson._id,
             name: lesson.name,
             authorName: lesson.authorName,
             releaseDate: formatReleaseDate(lesson.releaseDate),
@@ -522,6 +544,33 @@ app.get('/getLessons/:subjectId', async (req, res) => {
     } catch (error) {
         console.error('Hiba történt a leckék létrehozása során:', error);
         res.status(500).json({ error: 'Hiba történt a leckék létrehozása során!' });
+    }
+});
+
+app.post('/updateLessonStatus/:userId/:lessonId', async (req, res) => {
+    try {
+        const { userId, lessonId } = req.params;
+        const { newStatus } = req.body;
+        if (!userId || !lessonId) {
+            return res.status(400).json({ error: 'Hiányzó userId vagy lessonId!' });
+        }
+        const lessonStatus = await LessonStatusModel.findOne({ userID: userId, lessonID: lessonId });
+        if (lessonStatus) {
+            if (lessonStatus.status === 0 && newStatus === 1) {
+                lessonStatus.status = newStatus;
+                await lessonStatus.save();
+                return res.json({ message: 'Sikeres státusz frissítés!' });
+            } else if (lessonStatus.status === 1 && newStatus === 2) {
+                lessonStatus.status = newStatus;
+                await lessonStatus.save();
+                return res.json({ message: 'Sikeres státusz frissítés!' });
+            } else {
+                return res.json({ message: 'Nincs változás a státuszban.' });
+            }
+        }
+    } catch (error) {
+        console.error('Hiba történt a státusz frissítése során:', error);
+        res.status(500).json({ error: 'Hiba történt a státusz frissítése során!' });
     }
 });
 

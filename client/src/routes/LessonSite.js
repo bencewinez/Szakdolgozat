@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { UserContext } from '../UserContext';
 import { useParams } from 'react-router-dom';
 import "../componentStyles/LessonSite.css";
 
 const LessonSite = () => {
   const [lessonData, setLessonData] = useState({});
   const [lessonNotFound, setLessonNotFound] = useState(false);
+  const { userInfo } = useContext(UserContext);
   const { lUrlSlug } = useParams();
 
   useEffect(() => {
@@ -35,6 +37,31 @@ const LessonSite = () => {
     fetchLessonData();
   }, [lUrlSlug]);
 
+  const handleFinishLesson = async () => {
+    try {
+      const response = await fetch(`http://localhost:4000/updateLessonStatus/${userInfo.id}/${lessonData._id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          newStatus: 2,
+        }),
+        credentials: 'include',
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        console.log(result.message);
+      } else {
+        console.error('Hiba történt a státusz frissítése során:', result.error);
+      }
+    } catch (error) {
+      console.error('Hiba történt a státusz frissítése során:', error);
+    }
+  };
+
   return (
     <div className='default_bg'>
       <Navbar />
@@ -55,6 +82,9 @@ const LessonSite = () => {
         </div>
           <div className='contentBox'>
             <div dangerouslySetInnerHTML={{ __html: lessonData.content }} />
+            <div className='btnBox'>
+              <div className='btn' onClick={handleFinishLesson}>BEFEJEZÉS</div>
+            </div>
           </div>
       </div>
       <Footer />

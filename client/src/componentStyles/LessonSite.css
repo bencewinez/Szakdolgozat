@@ -49,6 +49,10 @@
     text-align: center;
 }
 
+.btnBox{
+    text-align: center;
+}
+
 @media screen and (max-width: 1100px) {
     .contentBox{
         width: 100%;
