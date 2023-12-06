@@ -200,7 +200,6 @@ const SubjectSite = () => {
             <div className='lessonBox'>
               <p className='description'><strong>Leckék:</strong></p>
               {lessons.map((lesson) => {
-                console.log(lesson);
                 return (
                   <LessonCard key={lesson._id} lesson={lesson} userId={userInfo?.id} />
                 );

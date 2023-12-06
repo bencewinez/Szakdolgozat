@@ -48,7 +48,6 @@ const AddLesson = () => {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log('A lecke sikeresen létrehozva! Lecke ID:', data.lessonID);
         alert('A lecke sikeresen létre lett hozva, mely a tantárgy oldalán megjelenik a kiválasztott időpontban!');
         navigate(`/tantargyak/${encodeURIComponent(subjectUrlSlug)}`);
       } else {

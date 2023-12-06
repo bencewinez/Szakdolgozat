@@ -547,6 +547,18 @@ app.get('/getLessons/:subjectId', async (req, res) => {
     }
 });
 
+app.get('/getLessonStatus/:userId/:lessonId', async (req, res) => {
+    try {
+        const { userId, lessonId } = req.params;
+        const lessonStatus = await LessonStatusModel.findOne({ userID: userId, lessonID: lessonId });
+
+        res.json({ status: lessonStatus ? lessonStatus.status : null });
+    } catch (error) {
+        console.error('Hiba történt a lecke státusz lekérdezése során:', error);
+        res.status(500).json({ error: 'Hiba történt a lecke státusz lekérdezése során!' });
+    }
+});
+
 app.post('/updateLessonStatus/:userId/:lessonId', async (req, res) => {
     try {
         const { userId, lessonId } = req.params;

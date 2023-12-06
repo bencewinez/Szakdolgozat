@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import "../componentStyles/LessonCardStyles.css";
 
 const LessonCard = (props) => {
   const { name, releaseDate, lUrlSlug, _id  } = props.lesson;
   const { userId } = props;
-  console.log(_id);
+
   const handleClick = async () => {
     try {
       const response = await fetch(`http://localhost:4000/updateLessonStatus/${userId}/${_id}`, {
@@ -31,15 +31,69 @@ const LessonCard = (props) => {
     }
   };
 
+  const [status, setStatus] = useState(null);
+
+  useEffect(() => {
+    const fetchLessonStatus = async () => {
+      try {
+        const response = await fetch(`http://localhost:4000/getLessonStatus/${userId}/${_id}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          setStatus(result.status);
+        } else {
+          console.error('Hiba történt a státusz lekérdezése során:', result.error);
+        }
+      } catch (error) {
+        console.error('Hiba történt a státusz lekérdezése során:', error);
+      }
+    };
+
+    fetchLessonStatus();
+  }, [userId, _id]);
+
+  const getStatusLabel = (status) => {
+    switch (status) {
+      case 0:
+        return 'Új lecke';
+      case 1:
+        return 'Folyamatban';
+      case 2:
+        return 'Feldolgozva';
+      default:
+        return 'Státusz';
+    }
+  };
+
+  const getStatusClass = (status) => {
+    switch (status) {
+      case 0:
+        return 'statusNew';
+      case 1:
+        return 'statusInProgress';
+      case 2:
+        return 'statusFinished';
+      default:
+        return 'statusNew';
+    }
+  };
+
   return (
-    <div className='lessonCard'>
+    <div className={`lessonCard ${getStatusClass(status)}`}>
       <div>
         <NavLink to={`/leckek/${lUrlSlug}`} onClick={handleClick}>
           <h3>{name}</h3>
         </NavLink>
-        <p>Megjelenése: {releaseDate}</p>
+        <h6>Megjelenése: {releaseDate}</h6>
       </div>
-        <p>Státusz</p>
+      <p>{getStatusLabel(status)}</p>
     </div>
   )
 }

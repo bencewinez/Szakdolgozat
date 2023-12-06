@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { UserContext } from '../UserContext';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate  } from 'react-router-dom';
 import "../componentStyles/LessonSite.css";
 
 const LessonSite = () => {
@@ -10,6 +10,7 @@ const LessonSite = () => {
   const [lessonNotFound, setLessonNotFound] = useState(false);
   const { userInfo } = useContext(UserContext);
   const { lUrlSlug } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchLessonData = async () => {
@@ -53,7 +54,8 @@ const LessonSite = () => {
       const result = await response.json();
 
       if (response.ok) {
-        console.log(result.message);
+        alert('A lecke sikeresen feldolgozásra került!');
+        navigate(`/`);
       } else {
         console.error('Hiba történt a státusz frissítése során:', result.error);
       }

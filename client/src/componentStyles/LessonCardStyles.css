@@ -27,15 +27,15 @@
     margin: 0;
 }
 
-.statusNew{
+.statusNew p{
     color: black;
 }
 
-.statusInProgress{
-    color: gray;
+.statusInProgress p{
+    color: orange;
 }
 
-.statusFinished{
+.statusFinished p{
     color: rgb(32, 192, 87);;
 }
 
