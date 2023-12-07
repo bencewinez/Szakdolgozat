@@ -1,6 +1,7 @@
 import React from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import ScrollUp from '../components/ScrollUp'
 
 const Aszf = () => {
   return (
@@ -20,6 +21,7 @@ const Aszf = () => {
           <h2>ΣDU</h2>
         </div>
       </div>
+      <ScrollUp/>
       <Footer />
     </div>
   )

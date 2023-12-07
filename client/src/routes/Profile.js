@@ -2,6 +2,7 @@ import React from 'react'
 import Navbar from '../components/Navbar'
 import EditProfileForm from "../components/EditProfileForm"
 import Footer from '../components/Footer'
+import ScrollUp from '../components/ScrollUp'
 
 const Profile = () => {
   return (
@@ -9,6 +10,7 @@ const Profile = () => {
         <Navbar />
         <br></br>
         <EditProfileForm />
+        <ScrollUp/>
         <Footer />
     </div>
   )

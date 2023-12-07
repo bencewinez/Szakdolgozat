@@ -2,6 +2,7 @@ import React from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import AddSubjectForm from '../components/AddSubjectForm'
+import ScrollUp from '../components/ScrollUp';
 
 const AddSubject = () => {
   return (
@@ -9,6 +10,7 @@ const AddSubject = () => {
         <Navbar/>
         <br></br>
         <AddSubjectForm/>
+        <ScrollUp/>
         <Footer/>
     </div>
   )

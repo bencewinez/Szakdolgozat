@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import Navbar from '../components/Navbar'
-import Footer from '../components/Footer'
-import "../componentStyles/AddLessonStyles.css"
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import ScrollUp from '../components/ScrollUp';
+import "../componentStyles/AddLessonStyles.css";
 
 const AddLesson = () => {
   const [value, setValue] = useState('');
@@ -140,6 +141,7 @@ const AddLesson = () => {
           />
           <br></br>
         </div>
+        <ScrollUp/>
         <Footer />
     </div>
   )

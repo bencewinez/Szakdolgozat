@@ -7,6 +7,7 @@ import { FaAngleRight, FaEdit, FaRegPlusSquare } from "react-icons/fa";
 import EditSubjectPopup from '../components/EditSubjectPopup';
 import DeleteSubjectPopup from '../components/DeleteSubjectPopup';
 import LessonCard from '../components/LessonCard';
+import ScrollUp from '../components/ScrollUp';
 import "../componentStyles/SubjectSite.css";
 
 const SubjectSite = () => {
@@ -223,6 +224,7 @@ const SubjectSite = () => {
       </>
     )}
     <EditSubjectPopup isOpen={isEditPopupOpen} onRequestClose={() => setIsEditPopupOpen(false)} subjectId={subject?._id} />
+    <ScrollUp/>
     <Footer />
   </div>
   );

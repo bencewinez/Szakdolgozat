@@ -4,6 +4,7 @@ import Footer from '../components/Footer';
 import { UserContext } from '../UserContext';
 import { useParams, useNavigate  } from 'react-router-dom';
 import "../componentStyles/LessonSite.css";
+import ScrollUp from '../components/ScrollUp';
 
 const LessonSite = () => {
   const [lessonData, setLessonData] = useState({});
@@ -89,6 +90,7 @@ const LessonSite = () => {
             </div>
           </div>
       </div>
+      <ScrollUp/>
       <Footer />
     </div>
   )

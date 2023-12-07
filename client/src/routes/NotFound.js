@@ -1,6 +1,7 @@
 import React from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import ScrollUp from '../components/ScrollUp'
 
 const NotFound = () => {
   return (
@@ -9,6 +10,7 @@ const NotFound = () => {
       <div className='service_h1'>
         <h1>Az oldal nem található.</h1>
       </div>
+      <ScrollUp/>
       <Footer />
     </div>
   )
