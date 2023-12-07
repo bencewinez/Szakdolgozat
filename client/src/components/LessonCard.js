@@ -6,6 +6,8 @@ const LessonCard = (props) => {
   const { name, releaseDate, lUrlSlug, _id  } = props.lesson;
   const { userId } = props;
 
+  console.log(userId);
+
   const handleClick = async () => {
     try {
       const response = await fetch(`http://localhost:4000/updateLessonStatus/${userId}/${_id}`, {
@@ -48,6 +50,7 @@ const LessonCard = (props) => {
 
         if (response.ok) {
           setStatus(result.status);
+          console.log(result.status);
         } else {
           console.error('Hiba történt a státusz lekérdezése során:', result.error);
         }
