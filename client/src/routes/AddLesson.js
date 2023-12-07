@@ -66,9 +66,9 @@ const AddLesson = () => {
     }
   };
 
-  const quillStyle = {
+/*   const quillStyle = {
     height: '85vh',
-  };
+  }; */
 
   const modules = {
     toolbar: [
@@ -133,7 +133,7 @@ const AddLesson = () => {
         <div className='newLessonBox'>
           <ReactQuill
           theme="snow"
-          style={quillStyle}
+          /* style={quillStyle} */
           modules={modules}
           formats={formats}
           value={value}

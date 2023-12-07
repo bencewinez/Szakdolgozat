@@ -5,6 +5,7 @@ import { UserContext } from '../UserContext';
 import { useParams, useNavigate  } from 'react-router-dom';
 import "../componentStyles/LessonSite.css";
 import ScrollUp from '../components/ScrollUp';
+import 'react-quill/dist/quill.snow.css';
 
 const LessonSite = () => {
   const [lessonData, setLessonData] = useState({});
@@ -84,7 +85,7 @@ const LessonSite = () => {
           </div>
         </div>
           <div className='contentBox'>
-            <div dangerouslySetInnerHTML={{ __html: lessonData.content }} />
+            <div className="view ql-editor" dangerouslySetInnerHTML={{ __html: lessonData.content }} />
             <div className='btnBox'>
               <div className='btn' onClick={handleFinishLesson}>BEFEJEZÉS</div>
             </div>
