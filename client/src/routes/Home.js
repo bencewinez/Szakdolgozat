@@ -6,6 +6,7 @@ import '../componentStyles/HomeStyles.css'
 import SearchSubjectResults from '../components/SearchSubjectResults'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import ScrollUp from '../components/ScrollUp'
 
 const Home = () => {
   const [selectedTopic, setSelectedTopic] = useState(null);
@@ -37,6 +38,7 @@ const Home = () => {
           </div>
         </div>
       </div>
+      <ScrollUp />
       <Footer />
     </div>
   )
