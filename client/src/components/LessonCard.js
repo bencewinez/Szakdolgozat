@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { FaTrash } from 'react-icons/fa';
+import DeleteLessonPopup from './DeleteLessonPopup';
 import "../componentStyles/LessonCardStyles.css";
 
 const LessonCard = (props) => {
   const { name, releaseDate, lUrlSlug, _id  } = props.lesson;
   const { userId } = props;
+  const [deletePopupOpen, setDeletePopupOpen] = useState(false);
 
   const handleClick = async () => {
     try {
@@ -87,12 +90,20 @@ const LessonCard = (props) => {
   return (
     <div className={`lessonCard ${getStatusClass(status)}`}>
       <div>
+        <FaTrash onClick={() => setDeletePopupOpen(true)} style={{ cursor: 'pointer' }} />
         <NavLink to={`/leckek/${lUrlSlug}`} onClick={handleClick}>
           <h3>{name}</h3>
         </NavLink>
         <h6>Megjelenése: {releaseDate}</h6>
       </div>
       <p>{getStatusLabel(status)}</p>
+        {deletePopupOpen && (
+        <DeleteLessonPopup
+          isOpen={deletePopupOpen}
+          onRequestClose={() => setDeletePopupOpen(false)}
+          lessonId={_id}
+        />
+        )}
     </div>
   )
 }

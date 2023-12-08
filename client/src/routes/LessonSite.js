@@ -6,6 +6,7 @@ import { useParams, useNavigate  } from 'react-router-dom';
 import "../componentStyles/LessonSite.css";
 import ScrollUp from '../components/ScrollUp';
 import 'react-quill/dist/quill.snow.css';
+import "react-quill/dist/quill.core.css";
 
 const LessonSite = () => {
   const [lessonData, setLessonData] = useState({});

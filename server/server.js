@@ -386,6 +386,7 @@ app.delete('/deleteSubject/:id', async (req, res) => {
             if (!subscription) {
                 return res.status(403).json({ error: 'Nincs feliratkozva erre a tantárgyra!' });
             }
+            await LessonModel.deleteMany({ subjectID: id });
             await LessonStatusModel.deleteMany({ userID: userId });
             await SubscriptionModel.findByIdAndRemove(subscription._id);
             res.json({ message: 'A tantárgy sikeresen törölve lett a feliratkozások közül!' });
@@ -584,6 +585,41 @@ app.post('/updateLessonStatus/:userId/:lessonId', async (req, res) => {
         console.error('Hiba történt a státusz frissítése során:', error);
         res.status(500).json({ error: 'Hiba történt a státusz frissítése során!' });
     }
+});
+
+app.delete('/deleteLesson/:lessonId', async (req, res) => {
+    const { token } = req.cookies;
+    if (!token) {
+        return res.status(401).json({ error: 'Nincs érvényes token!' });
+    }
+    jwt.verify(token, secret, {}, async (err, info) => {
+        if (err) {
+            return res.status(401).json({ error: 'Érvénytelen token!' });
+        }
+        const userId = info.id;
+        const { lessonId } = req.params;
+        try {
+            const lesson = await LessonModel.findById(lessonId);
+            if (!lesson) {
+                return res.status(404).json({ error: 'A lecke nem található!' });
+            }
+            if (lesson.authorID.toString() !== userId) {
+                return res.status(403).json({ error: 'Nincs jogosultsága törölni ezt a leckét!' });
+            }
+            const subject = await SubjectModel.findById(lesson.subjectID);
+            if (!subject) {
+                return res.status(404).json({ error: 'A tantárgy nem található!' });
+            }
+            if (subject.lessonsCount > 0) {
+                await SubjectModel.findByIdAndUpdate(lesson.subjectID, { $inc: { lessonsCount: -1 } });
+            }
+            await LessonStatusModel.deleteMany({ lessonID: lessonId });
+            await LessonModel.findByIdAndRemove(lessonId);
+            res.json({ message: 'A lecke sikeresen törölve lett!' });
+        } catch (error) {
+            return res.status(500).json({ error: 'Hiba a lecke törlése közben!' });
+        }
+    });
 });
 
 const PORT = 4000;
