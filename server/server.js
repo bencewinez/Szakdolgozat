@@ -533,10 +533,11 @@ app.get('/getLesson/:lUrlSlug', async (req, res) => {
 app.get('/getLessons/:subjectId', async (req, res) => {
     try {
         const { subjectId } = req.params;
-        const lessons = await LessonModel.find({ subjectID: subjectId }, '_id name authorName releaseDate lUrlSlug');
+        const lessons = await LessonModel.find({ subjectID: subjectId }, '_id name authorID authorName releaseDate lUrlSlug');
         const formattedLessons = lessons.map((lesson) => ({
             _id: lesson._id,
             name: lesson.name,
+            authorID: lesson.authorID,
             authorName: lesson.authorName,
             releaseDate: formatReleaseDate(lesson.releaseDate),
             lUrlSlug: lesson.lUrlSlug,

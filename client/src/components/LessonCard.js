@@ -5,7 +5,7 @@ import DeleteLessonPopup from './DeleteLessonPopup';
 import "../componentStyles/LessonCardStyles.css";
 
 const LessonCard = (props) => {
-  const { name, releaseDate, lUrlSlug, _id  } = props.lesson;
+  const { name, releaseDate, lUrlSlug, _id, authorID } = props.lesson;
   const { userId } = props;
   const [deletePopupOpen, setDeletePopupOpen] = useState(false);
 
@@ -90,7 +90,7 @@ const LessonCard = (props) => {
   return (
     <div className={`lessonCard ${getStatusClass(status)}`}>
       <div>
-        <FaTrash onClick={() => setDeletePopupOpen(true)} style={{ cursor: 'pointer' }} />
+        {authorID === userId && <FaTrash onClick={() => setDeletePopupOpen(true)} style={{ cursor: 'pointer' }} />}
         <NavLink to={`/leckek/${lUrlSlug}`} onClick={handleClick}>
           <h3>{name}</h3>
         </NavLink>
