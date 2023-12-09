@@ -22,6 +22,7 @@ const DeleteLessonPopup = ({ isOpen, onRequestClose, lessonId  }) => {
         } catch (error) {
           console.error('Hiba a folyamat során:', error);
         } finally {
+          window.location.reload();
           onRequestClose();
         }
       };
