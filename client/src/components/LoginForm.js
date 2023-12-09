@@ -25,7 +25,6 @@ async function login(ev){
   });
   if (response.ok){
     response.json().then(userInfo => {
-      console.log('OK');
       setUserInfo(userInfo);
       alert('Sikeres Bejelentkezés!');
       setRedirect(true);

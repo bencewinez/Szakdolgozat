@@ -85,109 +85,118 @@ const NavbarProfile = ({ isOpen, onRequestClose }) => {
 
     return (
         <ReactModal
-          isOpen={isOpen}
-          onRequestClose={onRequestClose}
-          contentLabel="Profil"
-          className="navbarProfileModal"
-          overlayClassName="navbarProfileOverlay"
+            isOpen={isOpen}
+            onRequestClose={onRequestClose}
+            contentLabel="Profil"
+            className="navbarProfileModal"
+            overlayClassName="navbarProfileOverlay"
         >
-        {isSubjectsActive ? (
-            <div className="profileBar">
-                <div
-                    className="backArrow"
-                    onClick={() => setIsSubjectsActive(false)}
-                >
-                    <FaLongArrowAltLeft size={25} style={{ color: "#000" }} /> Vissza
+            {isSubjectsActive ? (
+                <div className="profileBar">
+                    <div
+                        className="backArrow"
+                        onClick={() => setIsSubjectsActive(false)}
+                    >
+                        <FaLongArrowAltLeft size={25} style={{ color: "#000" }} /> Vissza
+                    </div>
+                    <ul>
+                        {subjects.map((subject) => (
+                            <li key={subject._id} className="mysubjectsLi">
+                                <div className="subjectContainer">
+                                    <NavLink to={`/tantargyak/${subject.urlSlug}`} className="mysubjectsLia">
+                                        <p className="mysubjectsLia">{subject.name}</p>
+                                    </NavLink>
+                                    <FaTrash size={16}
+                                        style={{ color: "#000" }}
+                                        onClick={() => {
+                                            setSelectedSubject(subject._id);
+                                            setIsDeletePopupOpen(true);
+                                        }}
+                                    />
+                                </div>
+                            </li>
+                        ))}
+                        <li className="logoutLi">
+                            <p className="logoutLia">Vissza a tetejére!</p>
+                        </li>
+                    </ul>
                 </div>
-                <ul>
-                    <li className="usernameLi">
-                        <p>Tantárgyaim</p>
-                    </li>
-                    {subjects.map((subject) => (
-                    <li key={subject._id} className="mysubjectsLi">
-                        <div className="subjectContainer">
-                            <NavLink to={`/tantargyak/${subject.urlSlug}`} className="mysubjectsLia">
-                                <p className="mysubjectsLia">{subject.name}</p>
-                            </NavLink>
-                            <FaTrash size={16}
-                            style={{ color: "#000" }}
-                            onClick={() => {
-                                setSelectedSubject(subject._id);
-                                setIsDeletePopupOpen(true);
-                            }}/>
-                        </div>
-                    </li>
-                    ))}
-                    <li className="logoutLi">
-                        <p className="logoutLia">Vissza a tetejére!</p>
-                    </li>
-                </ul>
-            </div>
-        ) : isMySubjectsActive ? (
-            <div className="profileBar">
-                <div
-                    className="backArrow"
-                    onClick={() => setIsMySubjectsActive(false)}
-                >
-                    <FaLongArrowAltLeft size={25} style={{ color: "#000" }} /> Vissza
+            ) : isMySubjectsActive ? (
+                <div className="profileBar">
+                    <div
+                        className="backArrow"
+                        onClick={() => setIsMySubjectsActive(false)}
+                    >
+                        <FaLongArrowAltLeft size={25} style={{ color: "#000" }} /> Vissza
+                    </div>
+                    <ul>
+                        {userAttributes.userType === 1 || userAttributes.userType === 2 ? (
+                            <li className="mysubjectsLi">
+                                <NavLink
+                                    className="subjectsLia"
+                                    onClick={() => setIsMySubjectsActive(true)}
+                                >
+                                    <p className="subjectsLia">Saját Tantárgyaim</p>
+                                </NavLink>
+                            </li>
+                        ) : null}
+                        {userAttributes.userType === 1 || userAttributes.userType === 2 ? (
+                            <li className="mysubjectsLi">
+                                <NavLink to="/ujtantargy" className="usernameLia">
+                                    <p className="usernameLia">Új tantárgy létrehozása</p>
+                                </NavLink>
+                            </li>
+                        ) : null}
+                        {mySubjects.map((subject) => (
+                            <li key={subject._id} className="mysubjectsLi">
+                                <NavLink to={`/tantargyak/${subject.urlSlug}`} className="mysubjectsLia">
+                                    <p className="mysubjectsLia">{subject.name}</p>
+                                </NavLink>
+                            </li>
+                        ))}
+                        <li className="logoutLi">
+                            <p className="logoutLia">Vissza a tetejére!</p>
+                        </li>
+                    </ul>
                 </div>
-                <ul>
-                    <li className="usernameLi">
-                        <p>Saját Tantárgyaim</p>
-                    </li>
-                    <li className="mysubjectsLi">
-                        <NavLink to="/ujtantargy" className="usernameLia">
-                            <p className="usernameLia">Új tantárgy létrehozása</p>
-                        </NavLink>
-                    </li>
-                    {mySubjects.map((subject) => (
-                        <li key={subject._id} className="mysubjectsLi">
-                            <NavLink to={`/tantargyak/${subject.urlSlug}`} className="mysubjectsLia">
-                                <p className="mysubjectsLia">{subject.name}</p>
+            ) : (
+                <div className="profileBar">
+                    <ul>
+                        <li className="usernameLi">
+                            <p>{userAttributes.name}</p>
+                        </li>
+                        <li>
+                            <NavLink to="/profil" className="usernameLia">
+                                <p className="usernameLia">Profilom</p>
                             </NavLink>
                         </li>
-                    ))}
-                    <li className="logoutLi">
-                        <p className="logoutLia">Vissza a tetejére!</p>
-                    </li>
-                </ul>
-            </div>
-        ) : (
-            <div className="profileBar">
-                <ul>
-                    <li className="usernameLi">
-                        <p>{userAttributes.name}</p>
-                    </li>
-                    <li>
-                        <NavLink to="/profil" className="usernameLia">
-                            <p className="usernameLia">Profilom</p>
-                        </NavLink>
-                    </li>
-                    <li className="mysubjectsLi">
-                        <NavLink
-                            className="subjectsLia"
-                            onClick={() => setIsMySubjectsActive(true)}
-                        >
-                            <p className="subjectsLia">Saját Tantárgyaim</p>
-                        </NavLink>
-                    </li>
-                    <li className="subjectsLi">
-                        <NavLink
-                            className="subjectsLia"
-                            onClick={() => setIsSubjectsActive(true)}
-                        >
-                            <p className="subjectsLia">Tantárgyaim</p>
-                        </NavLink>
-                    </li>
-                    <li className="logoutLi">
-                        <NavLink onClick={logout} className="logoutLia">
-                            <p className="logoutLia">Kijelentkezés</p>
-                        </NavLink>
-                    </li>
-                </ul>
-            </div>
-        )}
-        <DeleteSubjectPopup isOpen={isDeletePopupOpen} onRequestClose={() => setIsDeletePopupOpen(false)} subjectId={selectedSubject}/>
+                        {userAttributes.userType === 1 || userAttributes.userType === 2 ? (
+                            <li className="mysubjectsLi">
+                                <NavLink
+                                    className="subjectsLia"
+                                    onClick={() => setIsMySubjectsActive(true)}
+                                >
+                                    <p className="subjectsLia">Saját Tantárgyaim</p>
+                                </NavLink>
+                            </li>
+                        ) : null}
+                        <li className="subjectsLi">
+                            <NavLink
+                                className="subjectsLia"
+                                onClick={() => setIsSubjectsActive(true)}
+                            >
+                                <p className="subjectsLia">Tantárgyaim</p>
+                            </NavLink>
+                        </li>
+                        <li className="logoutLi">
+                            <NavLink onClick={logout} className="logoutLia">
+                                <p className="logoutLia">Kijelentkezés</p>
+                            </NavLink>
+                        </li>
+                    </ul>
+                </div>
+            )}
+            <DeleteSubjectPopup isOpen={isDeletePopupOpen} onRequestClose={() => setIsDeletePopupOpen(false)} subjectId={selectedSubject} />
         </ReactModal>
     );
 }
