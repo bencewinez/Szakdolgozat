@@ -11,7 +11,7 @@ const LessonCard = (props) => {
 
   const handleClick = async () => {
     try {
-      const response = await fetch(`http://localhost:4000/updateLessonStatus/${userId}/${_id}`, {
+      const response = await fetch(`http://localhost:4000/lessons/updateLessonStatus/${userId}/${_id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -38,7 +38,7 @@ const LessonCard = (props) => {
   useEffect(() => {
     const fetchLessonStatus = async () => {
       try {
-        const response = await fetch(`http://localhost:4000/getLessonStatus/${userId}/${_id}`, {
+        const response = await fetch(`http://localhost:4000/lessons/getLessonStatus/${userId}/${_id}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

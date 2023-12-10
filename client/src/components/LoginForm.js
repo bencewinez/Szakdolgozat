@@ -17,7 +17,7 @@ const {setUserInfo} = useContext(UserContext);
 async function login(ev){
   ev.preventDefault();
   
-  const response = await fetch('http://localhost:4000/login', {
+  const response = await fetch('http://localhost:4000/auth/login', {
     method: 'POST',
     body: JSON.stringify({email, password}),
     headers: {'Content-Type':'application/json'},
@@ -30,6 +30,8 @@ async function login(ev){
       setRedirect(true);
     });
   } else {
+    const errorMessage = await response.text();
+    console.error(errorMessage);
     alert('Nem megfelelő felhasználónév vagy jelszó!');
   }
 }

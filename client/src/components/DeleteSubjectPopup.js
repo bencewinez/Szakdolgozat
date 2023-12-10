@@ -9,7 +9,7 @@ const DeleteSubjectPopup = ({ isOpen, onRequestClose, subjectId  }) => {
         e.preventDefault();
 
         try {
-            const response = await fetch(`http://localhost:4000/deleteSubject/${subjectId}`, {
+            const response = await fetch(`http://localhost:4000/subjects/deleteSubject/${subjectId}`, {
                 method: 'DELETE',
                 credentials: 'include',
             });

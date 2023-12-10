@@ -16,7 +16,7 @@ const AddSubjectForm = () => {
   const [selectedTopic, setSelectedTopic] = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:4000/getSubjectTopics')
+    fetch('http://localhost:4000/subjects/getSubjectTopics')
       .then((response) => response.json())
       .then((data) => {
         setSubjectTopics(data);
@@ -43,7 +43,7 @@ const AddSubjectForm = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:4000/addSubject', {
+      const response = await fetch('http://localhost:4000/subjects/addSubject', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

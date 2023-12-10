@@ -18,7 +18,7 @@ const LessonSite = () => {
   useEffect(() => {
     const fetchLessonData = async () => {
       try {
-        const response = await fetch(`http://localhost:4000/getLesson/${lUrlSlug}`);
+        const response = await fetch(`http://localhost:4000/lessons/getLesson/${lUrlSlug}`);
         if (response.ok) {
           const data = await response.json();
           const currentDateTime = new Date();
@@ -43,7 +43,7 @@ const LessonSite = () => {
 
   const handleFinishLesson = async () => {
     try {
-      const response = await fetch(`http://localhost:4000/updateLessonStatus/${userInfo.id}/${lessonData._id}`, {
+      const response = await fetch(`http://localhost:4000/lessons/updateLessonStatus/${userInfo.id}/${lessonData._id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -16,7 +16,7 @@ const SearchSubjectResults = ({ selectedTopic, searchText }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let apiUrl = `http://localhost:4000/getAllSubjects?page=${currentPage}&pageSize=${pageSize}`;
+        let apiUrl = `http://localhost:4000/subjects/getAllSubjects?page=${currentPage}&pageSize=${pageSize}`;
         if (selectedTopic) {
           apiUrl += `&topic=${selectedTopic}`;
         }

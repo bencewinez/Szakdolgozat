@@ -51,7 +51,7 @@ const SubjectSite = () => {
   useEffect(() => {
     const fetchSubjectData = async () => {
       try {
-        const response = await fetch(`http://localhost:4000/getSubject/${urlSlug}`);
+        const response = await fetch(`http://localhost:4000/subjects/getSubject/${urlSlug}`);
         if (!response.ok) {
           if (response.status === 404) {
             setSubjectNotFound(true);
@@ -73,7 +73,7 @@ const SubjectSite = () => {
 
   const handleSubscribe = async () => {
     try {
-      const response = await fetch(`http://localhost:4000/subscribe/${urlSlug}`, {
+      const response = await fetch(`http://localhost:4000/subjects/subscribe/${urlSlug}`, {
         method: 'POST',
         credentials: 'include',
       });
@@ -95,7 +95,7 @@ const SubjectSite = () => {
   useEffect(() => {
     const checkSubscription = async () => {
       try {
-        const response = await fetch('http://localhost:4000/getSubjectNames', {
+        const response = await fetch('http://localhost:4000/subjects/getSubjectNames', {
           credentials: 'include',
         });
         if (!response.ok) {
@@ -123,7 +123,7 @@ const SubjectSite = () => {
   useEffect(() => {
     const fetchLessons = async () => {
       try {
-        const response = await fetch(`http://localhost:4000/getLessons/${selectedSubject}`);
+        const response = await fetch(`http://localhost:4000/lessons/getLessons/${selectedSubject}`);
         if (!response.ok) {
           throw new Error('Hiba a leckék lekérdezése közben!');
         }

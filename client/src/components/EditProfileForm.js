@@ -36,7 +36,7 @@ const EditProfileForm = () => {
     }, [userInfo]);
     
     const fetchUserProfile = () => {
-        fetch('http://localhost:4000/userProfile', {
+        fetch('http://localhost:4000/auth/userProfile', {
             credentials: 'include',
         })
         .then((response) => response.json())
@@ -50,7 +50,7 @@ const EditProfileForm = () => {
 
     async function editData(ev){
         ev.preventDefault();
-        const response = await fetch('http://localhost:4000/changeData', {
+        const response = await fetch('http://localhost:4000/auth/changeData', {
             credentials: 'include',
             method: 'POST',
             body: JSON.stringify({newName, newEmail}),
@@ -72,7 +72,7 @@ const EditProfileForm = () => {
         const confirmPasswordInput = formPassword.current.confirmPassword;
 
         if (newPasswordInput.value === confirmPasswordInput.value) {
-            const response = await fetch('http://localhost:4000/changePassword', {
+            const response = await fetch('http://localhost:4000/auth/changePassword', {
                 credentials: 'include',
                 method: 'POST',
                 body: JSON.stringify({currentPassword, newPassword}),

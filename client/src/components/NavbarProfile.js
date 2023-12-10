@@ -30,7 +30,7 @@ const NavbarProfile = ({ isOpen, onRequestClose }) => {
     }, [userInfo]);
     
     const fetchUserProfile = () => {
-        fetch('http://localhost:4000/userProfile', {
+        fetch('http://localhost:4000/auth/userProfile', {
             credentials: 'include',
         })
         .then((response) => response.json())
@@ -43,7 +43,7 @@ const NavbarProfile = ({ isOpen, onRequestClose }) => {
     };
 
     const getSubjects = () => {
-        fetch('http://localhost:4000/getSubjectNames', {
+        fetch('http://localhost:4000/subjects/getSubjectNames', {
             credentials: 'include',
         })
             .then((response) => response.json())
@@ -56,7 +56,7 @@ const NavbarProfile = ({ isOpen, onRequestClose }) => {
     };
 
     const getMySubjects = () => {
-        fetch('http://localhost:4000/getMySubjects', {
+        fetch('http://localhost:4000/subjects/getMySubjects', {
             credentials: 'include',
         })
             .then((response) => response.json())
@@ -69,7 +69,7 @@ const NavbarProfile = ({ isOpen, onRequestClose }) => {
     };
 
     function logout(){
-        fetch('http://localhost:4000/logout', {
+        fetch('http://localhost:4000/auth/logout', {
             credentials: 'include',
             method: 'POST',
         });

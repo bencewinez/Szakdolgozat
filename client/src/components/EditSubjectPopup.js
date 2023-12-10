@@ -14,7 +14,7 @@ const EditSubjectPopup = ({ isOpen, onRequestClose, subjectId, onSubjectEdit }) 
 
     useEffect(() => {
         if (urlSlug) {
-            fetch(`http://localhost:4000/getSubject/${urlSlug}`)
+            fetch(`http://localhost:4000/subjects/getSubject/${urlSlug}`)
                 .then((response) => response.json())
                 .then((data) => {
                     setNewName(data.name);
@@ -29,7 +29,7 @@ const EditSubjectPopup = ({ isOpen, onRequestClose, subjectId, onSubjectEdit }) 
     const handleEditSubject = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`http://localhost:4000/updateSubject/${subjectId}`, {
+            const response = await fetch(`http://localhost:4000/subjects/updateSubject/${subjectId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

@@ -9,7 +9,7 @@ const SearchSubjectTopics = ({ onTopicClick }) => {
   useEffect(() => {
     const fetchSubjectTopics = async () => {
       try {
-        const response = await fetch('http://localhost:4000/getSubjectTopics');
+        const response = await fetch('http://localhost:4000/subjects/getSubjectTopics');
         if (!response.ok) {
           throw new Error('Hiba a Tantárgy Témakörök lekérdezése közben!');
         }
@@ -24,7 +24,7 @@ const SearchSubjectTopics = ({ onTopicClick }) => {
 
   const handleTopicClick = async (topic) => {
     try {
-      const response = await fetch('http://localhost:4000/getSubjectTopics');
+      const response = await fetch('http://localhost:4000/subjects/getSubjectTopics');
       if (!response.ok) {
         throw new Error('Hiba a Tantárgy Témakörök lekérdezése közben!');
       }

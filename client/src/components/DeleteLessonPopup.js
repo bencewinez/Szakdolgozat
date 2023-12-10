@@ -9,7 +9,7 @@ const DeleteLessonPopup = ({ isOpen, onRequestClose, lessonId  }) => {
     const deleteLesson = async (e) => {
         e.preventDefault();
         try {
-          const response = await fetch(`http://localhost:4000/deleteLesson/${lessonId}`, {
+          const response = await fetch(`http://localhost:4000/lessons/deleteLesson/${lessonId}`, {
             method: 'DELETE',
             credentials: 'include',
           });

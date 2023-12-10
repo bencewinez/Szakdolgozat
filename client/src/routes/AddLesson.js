@@ -35,7 +35,7 @@ const AddLesson = () => {
       return;
     }
     try {
-      const response = await fetch(`http://localhost:4000/createLesson/${subjectUrlSlug}`, {
+      const response = await fetch(`http://localhost:4000/lessons/createLesson/${subjectUrlSlug}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -65,10 +65,6 @@ const AddLesson = () => {
       alert('Hiba a lecke létrehozása során! Próbálja meg később!');
     }
   };
-
-/*   const quillStyle = {
-    height: '85vh',
-  }; */
 
   const modules = {
     toolbar: [

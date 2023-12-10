@@ -14,7 +14,7 @@ const {setUserInfo} = useContext(UserContext);
 async function deleteProfile(ev) {
     ev.preventDefault();
 
-    const response = await fetch('http://localhost:4000/deleteProfile', {
+    const response = await fetch('http://localhost:4000/auth/deleteProfile', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
